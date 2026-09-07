@@ -38,6 +38,7 @@ composer.phar
 *.tar.gz
 *.tgz
 dist/
+build/
 
 # Logs & Temporary files
 *.log
