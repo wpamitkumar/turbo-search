@@ -1,0 +1,70 @@
+name: Build & Package Release
+
+# This workflow only runs when you explicitly want to create a new release package.
+# Normal git push / branch commits will NEVER build packages.
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+*'
+      - '[0-9]+.[0-9]+.[0-9]+*'
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Tag or version name to package (e.g. 1.0.0)'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+jobs:
+  build-package:
+    name: Build Production ZIP
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Determine Version
+        id: vars
+        run: |
+          if [ -n "${{ github.event.inputs.tag_name }}" ]; then
+            TAG="${{ github.event.inputs.tag_name }}"
+          elif [ -n "${{ github.event.release.tag_name }}" ]; then
+            TAG="${{ github.event.release.tag_name }}"
+          elif [[ "$GITHUB_REF" == refs/tags/* ]]; then
+            TAG="${GITHUB_REF#refs/tags/}"
+          else
+            TAG="1.0.0"
+          fi
+          echo "tag=${TAG}" >> $GITHUB_OUTPUT
+          echo "Building package for version: ${TAG}"
+
+      - name: Create Clean Plugin Package
+        run: |
+          mkdir -p build/turbo-search
+          rsync -av --exclude-from='.distignore' ./ build/turbo-search/
+          cd build
+          zip -r turbo-search.zip turbo-search/
+          cd ..
+
+      - name: Upload Artifact to Workflow Run
+        uses: actions/upload-artifact@v4
+        with:
+          name: turbo-search-${{ steps.vars.outputs.tag || 'package' }}
+          path: build/turbo-search.zip
+          retention-days: 14
+
+      - name: Attach ZIP to GitHub Release
+        if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'release'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: build/turbo-search.zip
+          generate_release_notes: true
+          tag_name: ${{ steps.vars.outputs.tag }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+

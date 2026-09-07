@@ -1,0 +1,1037 @@
+/**
+* Turbo Search: React Admin SPA Stylesheet
+*/
+:root {
+	--wpts-blue: #2563eb;
+	--wpts-blue-dark: #1d4ed8;
+	--wpts-blue-light: #eff6ff;
+	--wpts-blue-border: #bfdbfe;
+	--wpts-green: #16a34a;
+	--wpts-green-light: #dcfce7;
+	--wpts-red: #dc2626;
+	--wpts-red-light: #fee2e2;
+	--wpts-amber: #d97706;
+	--wpts-amber-light: #fef3c7;
+	--wpts-gray-50: #f8fafc;
+	--wpts-gray-100: #f1f5f9;
+	--wpts-gray-200: #e2e8f0;
+	--wpts-gray-300: #cbd5e1;
+	--wpts-gray-600: #475569;
+	--wpts-gray-800: #1e293b;
+	--wpts-gray-900: #0f172a;
+	--wpts-radius: 8px;
+}
+
+#wpts-admin-root,
+#wpts-admin-app,
+.wpts-wrap {
+	max-width: 1200px;
+	margin: 20px 20px 40px 0;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, sans-serif;
+	color: var(--wpts-gray-800);
+}
+#wpts-admin-root *, #wpts-admin-root *::before, #wpts-admin-root *::after,
+#wpts-admin-app *, #wpts-admin-app *::before, #wpts-admin-app *::after,
+.wpts-wrap *, .wpts-wrap *::before, .wpts-wrap *::after {
+	box-sizing: border-box;
+}
+
+/* Scoped WordPress Core Admin Resets */
+.wpts-wrap button,
+#wpts-admin-root button {
+	font-family: inherit;
+	box-shadow: none;
+	text-shadow: none;
+}
+.wpts-wrap input,
+#wpts-admin-root input,
+.wpts-wrap select,
+#wpts-admin-root select {
+	font-family: inherit;
+}
+
+/* Top Header */
+.wpts-app-header {
+	background: #ffffff;
+	border: 1px solid var(--wpts-gray-200);
+	border-radius: var(--wpts-radius);
+	padding: 16px 24px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 20px;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+	flex-wrap: wrap;
+	gap: 12px;
+}
+.wpts-app-header__title {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin: 0;
+	font-size: 20px;
+	font-weight: 700;
+	color: var(--wpts-gray-900);
+}
+.wpts-app-header__badge {
+	font-size: 11px;
+	font-weight: 700;
+	background: var(--wpts-blue-light);
+	color: var(--wpts-blue);
+	padding: 2px 8px;
+	border-radius: 99px;
+	text-transform: uppercase;
+}
+.wpts-app-header__pills {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	flex-wrap: wrap;
+}
+.wpts-pill {
+	font-size: 12px;
+	font-weight: 600;
+	padding: 4px 10px;
+	border-radius: 99px;
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+}
+.wpts-pill--green { background: var(--wpts-green-light); color: var(--wpts-green); }
+.wpts-pill--blue  { background: var(--wpts-blue-light);  color: var(--wpts-blue); }
+.wpts-pill--amber { background: var(--wpts-amber-light); color: var(--wpts-amber); }
+
+/* Live Auto-Refresh Controls */
+.wpts-live-controls {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	background: var(--wpts-gray-50);
+	border: 1px solid var(--wpts-gray-200);
+	border-radius: 99px;
+	padding: 2px 4px 2px 8px;
+}
+.wpts-live-pulse {
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	font-size: 11px;
+	font-weight: 700;
+	color: var(--wpts-gray-600);
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+}
+.wpts-live-pulse.is-active {
+	color: var(--wpts-green);
+}
+.wpts-pulse-dot {
+	width: 7px;
+	height: 7px;
+	border-radius: 50%;
+	background: var(--wpts-gray-300);
+	display: inline-block;
+}
+.wpts-live-pulse.is-active .wpts-pulse-dot {
+	background: var(--wpts-green);
+	box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.7);
+	animation: wptsPulse 1.8s infinite;
+}
+@keyframes wptsPulse {
+	0% {
+		transform: scale(0.95);
+		box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.7);
+	}
+	70% {
+		transform: scale(1);
+		box-shadow: 0 0 0 6px rgba(22, 163, 74, 0);
+	}
+	100% {
+		transform: scale(0.95);
+		box-shadow: 0 0 0 0 rgba(22, 163, 74, 0);
+	}
+}
+.wpts-refresh-select {
+	font-size: 11.5px;
+	font-weight: 600;
+	height: 26px;
+	line-height: 24px;
+	padding: 0 8px;
+	border-radius: 99px;
+	border: 1px solid var(--wpts-gray-200);
+	background: #ffffff;
+	color: var(--wpts-gray-800);
+	cursor: pointer;
+}
+.wpts-btn-refresh {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 28px;
+	height: 28px;
+	padding: 0;
+	border-radius: 4px;
+	border: none;
+	background: transparent;
+	background-color: transparent;
+	box-shadow: none;
+	outline: none;
+	cursor: pointer;
+	color: var(--wpts-gray-600);
+	line-height: 1;
+	transition: transform 0.2s ease, color 0.15s ease, opacity 0.15s ease;
+}
+.wpts-btn-refresh:hover,
+.wpts-btn-refresh:focus {
+	background: transparent;
+	background-color: transparent;
+	color: var(--wpts-primary);
+	box-shadow: none;
+	outline: none;
+	opacity: 0.8;
+}
+.wpts-btn-refresh:active {
+	background: transparent;
+	background-color: transparent;
+	transform: scale(0.9);
+}
+.wpts-btn-refresh.is-spinning {
+	animation: wptsSpin 0.8s linear infinite;
+	background: transparent;
+	background-color: transparent;
+}
+@keyframes wptsSpin {
+	100% { transform: rotate(360deg); }
+}
+
+/* 2-Column Settings Layout (Vertical Sidebar + Content) */
+.wpts-settings-layout {
+	display: grid;
+	grid-template-columns: 240px 1fr;
+	gap: 24px;
+	align-items: flex-start;
+	width: 100%;
+}
+@media (max-width: 850px) {
+	.wpts-settings-layout {
+		grid-template-columns: 1fr;
+	}
+}
+.wpts-settings-sidebar {
+	position: sticky;
+	top: 36px;
+	width: 240px;
+	flex-shrink: 0;
+}
+.wpts-settings-content {
+	min-width: 0;
+	width: 100%;
+}
+
+/* Vertical Navigation Tabs (Sidebar Menu) */
+.wpts-app-nav {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	background: #ffffff;
+	border: 1px solid var(--wpts-gray-200);
+	border-radius: var(--wpts-radius);
+	padding: 8px;
+	width: 100%;
+	box-sizing: border-box;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+}
+.wpts-nav-btn {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 10px;
+	background: transparent;
+	background-color: transparent;
+	border: none;
+	border-left: 3px solid transparent;
+	padding: 10px 14px;
+	font-size: 13.5px;
+	font-weight: 500;
+	color: var(--wpts-gray-600);
+	text-decoration: none;
+	border-radius: 6px;
+	cursor: pointer;
+	white-space: nowrap;
+	transition: all 0.15s ease;
+	line-height: 1.4;
+	outline: none;
+	width: 100%;
+	box-sizing: border-box;
+	text-align: left;
+	box-shadow: none;
+}
+.wpts-nav-btn:hover,
+.wpts-nav-btn:focus {
+	background: var(--wpts-gray-100);
+	background-color: var(--wpts-gray-100);
+	color: var(--wpts-gray-900);
+	border-left-color: var(--wpts-gray-300);
+	outline: none;
+	box-shadow: none;
+}
+.wpts-nav-btn.is-active {
+	background: var(--wpts-blue-light);
+	background-color: var(--wpts-blue-light);
+	color: var(--wpts-blue);
+	font-weight: 700;
+	border-left: 3px solid var(--wpts-blue);
+	box-shadow: 0 1px 2px rgba(37, 99, 235, 0.08);
+}
+
+/* Panels & Cards */
+.wpts-app-panel {
+	background: #ffffff;
+	border: 1px solid var(--wpts-gray-200);
+	border-radius: var(--wpts-radius);
+	padding: 24px;
+	margin-bottom: 24px;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+}
+.wpts-app-panel__title {
+	margin: 0 0 16px;
+	font-size: 16px;
+	font-weight: 700;
+	color: var(--wpts-gray-900);
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	gap: 8px;
+	text-align: left;
+}
+.wpts-app-panel__desc {
+	font-size: 13.5px;
+	color: var(--wpts-gray-600);
+	margin: 0 0 20px;
+}
+
+/* KPI Summary Cards Grid */
+.wpts-kpi-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+	gap: 16px;
+	margin-bottom: 24px;
+}
+.wpts-kpi-card {
+	background: var(--wpts-gray-50);
+	border: 1px solid var(--wpts-gray-200);
+	border-radius: var(--wpts-radius);
+	padding: 16px;
+	display: flex;
+	align-items: center;
+	gap: 12px;
+}
+.wpts-kpi-icon {
+	font-size: 22px;
+	width: 42px;
+	height: 42px;
+	border-radius: 8px;
+	background: #ffffff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: 1px solid var(--wpts-gray-200);
+}
+.wpts-kpi-value {
+	font-size: 20px;
+	font-weight: 700;
+	color: var(--wpts-gray-900);
+	line-height: 1.2;
+}
+.wpts-kpi-label {
+	font-size: 12px;
+	color: var(--wpts-gray-600);
+	font-weight: 500;
+}
+
+/* Form Controls in React */
+.wpts-form-group {
+	margin-bottom: 20px;
+}
+.wpts-form-label {
+	display: block;
+	font-weight: 600;
+	font-size: 13.5px;
+	color: var(--wpts-gray-900);
+	margin-bottom: 6px;
+}
+.wpts-form-help {
+	font-size: 12.5px;
+	color: var(--wpts-gray-600);
+	margin-top: 4px;
+}
+.wpts-form-input {
+	width: 100%;
+	max-width: 450px;
+	height: 38px;
+	padding: 8px 12px;
+	font-size: 13.5px;
+	border: 1px solid var(--wpts-gray-300);
+	border-radius: 6px;
+	background: #ffffff;
+	color: var(--wpts-gray-800);
+	outline: none;
+	box-sizing: border-box;
+	transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.wpts-form-input:focus {
+	border-color: var(--wpts-blue);
+	box-shadow: 0 0 0 2px var(--wpts-blue-border);
+}
+
+.wpts-form-select {
+	display: block;
+	width: 100%;
+	max-width: 450px;
+	height: 38px;
+	padding: 0 36px 0 12px;
+	font-size: 13.5px;
+	font-family: inherit;
+	color: var(--wpts-gray-800);
+	border: 1px solid var(--wpts-gray-300);
+	border-radius: 6px;
+	background-color: #ffffff;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%2364748b' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.75' d='m6 8 4 4 4-4'/%3E%3C/svg%3E");
+	background-position: right 10px center;
+	background-repeat: no-repeat;
+	background-size: 16px 16px;
+	cursor: pointer;
+	line-height: 36px;
+	vertical-align: middle;
+	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	outline: none;
+	box-sizing: border-box;
+	transition: border-color 0.15s ease, box-shadow 0.15s ease, background-image 0.15s ease;
+}
+.wpts-form-select:hover {
+	border-color: var(--wpts-gray-400);
+}
+.wpts-form-select:focus {
+	border-color: var(--wpts-blue);
+	box-shadow: 0 0 0 2px var(--wpts-blue-border);
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%232563eb' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.75' d='m6 8 4 4 4-4'/%3E%3C/svg%3E");
+}
+.wpts-form-select:disabled {
+	background-color: #f8fafc;
+	color: var(--wpts-gray-400);
+	cursor: not-allowed;
+	opacity: 0.7;
+}
+
+/* Toggle switch */
+.wpts-toggle-wrap {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	cursor: pointer;
+	margin-bottom: 12px;
+	font-size: 13.5px;
+	font-weight: 500;
+}
+.wpts-switch {
+	position: relative;
+	width: 40px;
+	height: 22px;
+	background: #cbd5e1;
+	border-radius: 99px;
+	transition: background 0.2s ease;
+}
+.wpts-switch.is-checked { background: var(--wpts-blue); }
+.wpts-switch-thumb {
+	position: absolute;
+	top: 3px;
+	left: 3px;
+	width: 16px;
+	height: 16px;
+	background: #ffffff;
+	border-radius: 50%;
+	transition: transform 0.2s ease;
+}
+.wpts-switch.is-checked .wpts-switch-thumb {
+	transform: translateX(18px);
+}
+
+/* Weight Sliders */
+.wpts-slider-row {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	margin-bottom: 16px;
+}
+.wpts-slider-name {
+	width: 160px;
+	font-weight: 600;
+	font-size: 13.5px;
+}
+.wpts-slider-range {
+	flex: 1;
+	max-width: 320px;
+}
+.wpts-slider-val {
+	font-weight: 700;
+	font-size: 14px;
+	color: var(--wpts-blue);
+	min-width: 45px;
+}
+
+/* Synonyms Tag Manager */
+.wpts-synonym-chips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin-bottom: 16px;
+}
+.wpts-synonym-chip {
+	background: var(--wpts-blue-light);
+	border: 1px solid var(--wpts-blue-border);
+	color: var(--wpts-blue-dark);
+	border-radius: 99px;
+	padding: 4px 12px;
+	font-size: 12.5px;
+	font-weight: 600;
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+}
+.wpts-chip-del {
+	background: transparent;
+	border: none;
+	cursor: pointer;
+	color: var(--wpts-red);
+	font-weight: 700;
+	font-size: 14px;
+	line-height: 1;
+	padding: 0 2px;
+}
+
+/* Progress Bar for Indexer */
+.wpts-progress-track {
+	background: var(--wpts-gray-200);
+	border-radius: 6px;
+	height: 24px;
+	overflow: hidden;
+	position: relative;
+	margin-bottom: 10px;
+}
+.wpts-progress-fill {
+	background: linear-gradient(90deg, #2563eb, #3b82f6);
+	height: 100%;
+	transition: width 0.25s ease;
+}
+.wpts-progress-label {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 12px;
+	font-weight: 700;
+	color: var(--wpts-gray-900);
+}
+
+/* Floating Save Bar / Toast */
+.wpts-save-bar {
+	position: sticky;
+	bottom: 20px;
+	background: var(--wpts-gray-900);
+	color: #ffffff;
+	padding: 12px 24px;
+	border-radius: 10px;
+	box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	z-index: 1000;
+	margin-top: 24px;
+}
+.wpts-btn-primary {
+	background: var(--wpts-blue);
+	color: #ffffff;
+	border: none;
+	padding: 8px 18px;
+	font-size: 13.5px;
+	font-weight: 600;
+	border-radius: 6px;
+	cursor: pointer;
+	transition: background 0.15s ease;
+}
+.wpts-btn-primary:hover { background: var(--wpts-blue-dark); }
+.wpts-btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.wpts-toast {
+	position: fixed;
+	top: 40px;
+	right: 40px;
+	background: var(--wpts-gray-900);
+	color: #ffffff;
+	padding: 12px 20px;
+	border-radius: 8px;
+	box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+	z-index: 99999;
+	animation: wpts-slide-down 0.2s ease;
+	font-size: 13.5px;
+	font-weight: 600;
+}
+@keyframes wpts-slide-down {
+	from { transform: translateY(-10px); opacity: 0; }
+	to { transform: translateY(0); opacity: 1; }
+}
+
+/* Modern macOS-Style Code Window & Terminal Snippets */
+.wpts-code-window {
+	margin: 18px 0 24px;
+	background: #090d16;
+	border: 1px solid #1e293b;
+	border-radius: 10px;
+	overflow: hidden;
+	box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+.wpts-code-window__header {
+	background: #0f172a;
+	padding: 8px 14px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border-bottom: 1px solid #1e293b;
+}
+
+.wpts-code-window__traffic-lights {
+	display: flex;
+	align-items: center;
+	gap: 7px;
+}
+.wpts-code-window__dot {
+	width: 11px;
+	height: 11px;
+	border-radius: 50%;
+	display: inline-block;
+}
+.wpts-code-window__dot--red { background: #ff5f56; box-shadow: 0 0 6px rgba(255,95,86,0.4); }
+.wpts-code-window__dot--yellow { background: #ffbd2e; box-shadow: 0 0 6px rgba(255,189,46,0.4); }
+.wpts-code-window__dot--green { background: #27c93f; box-shadow: 0 0 6px rgba(39,201,63,0.4); }
+
+.wpts-code-window__title {
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+	font-size: 11px;
+	font-weight: 700;
+	color: #94a3b8;
+	background: rgba(255, 255, 255, 0.06);
+	padding: 3px 10px;
+	border-radius: 4px;
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	letter-spacing: 0.05em;
+	text-transform: uppercase;
+}
+
+.wpts-code-window__copy {
+	background: rgba(255, 255, 255, 0.08);
+	color: #e2e8f0;
+	border: 1px solid rgba(255, 255, 255, 0.12);
+	border-radius: 5px;
+	font-size: 11.5px;
+	font-weight: 600;
+	padding: 4px 10px;
+	cursor: pointer;
+	transition: all 0.15s ease;
+	display: flex;
+	align-items: center;
+	gap: 5px;
+	line-height: 1.2;
+}
+.wpts-code-window__copy:hover {
+	background: rgba(255, 255, 255, 0.18);
+	color: #ffffff;
+	border-color: rgba(255, 255, 255, 0.3);
+}
+
+.wpts-code-window__pre {
+	margin: 0;
+	padding: 16px 18px;
+	background: #090d16;
+	color: #e2e8f0;
+	font-family: 'JetBrains Mono', 'Fira Code', 'SFMono-Regular', Menlo, Monaco, Consolas, monospace;
+	font-size: 13px;
+	line-height: 1.65;
+	overflow-x: auto;
+	tab-size: 4;
+}
+
+.wpts-code-window__pre::-webkit-scrollbar {
+	height: 7px;
+	background: #090d16;
+}
+.wpts-code-window__pre::-webkit-scrollbar-thumb {
+	background: #334155;
+	border-radius: 4px;
+}
+.wpts-code-window__pre::-webkit-scrollbar-thumb:hover {
+	background: #475569;
+}
+
+/* Syntax Highlighting Colors */
+.wpts-syn-comment { color: #64748b; font-style: italic; }
+.wpts-syn-string  { color: #34d399; }
+.wpts-syn-kw      { color: #60a5fa; font-weight: 600; }
+.wpts-syn-var     { color: #f472b6; font-weight: 500; }
+.wpts-syn-prompt  { color: #38bdf8; font-weight: 700; }
+
+/* Documentation Reader Typography & Tables */
+.wpts-doc-link {
+	color: #2563eb;
+	font-weight: 600;
+	text-decoration: none;
+	transition: color 0.15s ease, text-decoration 0.15s ease;
+}
+.wpts-doc-link:hover {
+	color: #1d4ed8;
+	text-decoration: underline;
+}
+
+.wpts-doc-inline-code {
+	background: #f1f5f9;
+	color: #0f172a;
+	padding: 2px 6px;
+	border-radius: 5px;
+	font-size: 12px;
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+	border: 1px solid #e2e8f0;
+	font-weight: 600;
+}
+
+.wpts-doc-h1 {
+	font-size: 22px;
+	font-weight: 800;
+	color: #0f172a;
+	letter-spacing: -0.02em;
+	margin: 0 0 16px;
+	padding-bottom: 12px;
+	border-bottom: 2px solid #e2e8f0;
+	scroll-margin-top: 50px;
+}
+.wpts-doc-h2 {
+	font-size: 17px;
+	font-weight: 700;
+	color: #1e293b;
+	margin: 28px 0 12px;
+	scroll-margin-top: 50px;
+}
+.wpts-doc-h3 {
+	font-size: 15px;
+	font-weight: 700;
+	color: #334155;
+	margin: 20px 0 8px;
+	scroll-margin-top: 50px;
+}
+.wpts-doc-h4 {
+	font-size: 14px;
+	font-weight: 700;
+	color: #475569;
+	margin: 16px 0 6px;
+	scroll-margin-top: 50px;
+}
+.wpts-doc-p {
+	font-size: 14px;
+	color: #334155;
+	line-height: 1.7;
+	margin: 0 0 14px;
+}
+
+/* Clean Lists & Bullet Styling */
+.wpts-doc-li {
+	display: flex;
+	align-items: flex-start;
+	gap: 10px;
+	margin: 8px 0;
+	font-size: 13.5px;
+	color: #334155;
+	line-height: 1.6;
+}
+.wpts-doc-li__bullet {
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	background: #3b82f6;
+	flex-shrink: 0;
+	margin-top: 8px;
+}
+.wpts-doc-li--nested {
+	margin-left: 24px;
+}
+.wpts-doc-li--nested .wpts-doc-li__bullet {
+	background: #94a3b8;
+	width: 5px;
+	height: 5px;
+}
+.wpts-doc-li__content {
+	flex-grow: 1;
+}
+
+/* Modern Stepper for Installation & Steps */
+.wpts-doc-step {
+	display: flex;
+	align-items: flex-start;
+	gap: 14px;
+	margin: 12px 0;
+	padding: 14px 18px;
+	background: #f8fafc;
+	border-radius: 10px;
+	border: 1px solid #e2e8f0;
+	transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.wpts-doc-step:hover {
+	border-color: #cbd5e1;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+.wpts-doc-step__num {
+	background: linear-gradient(135deg, #2563eb, #3b82f6);
+	color: #ffffff;
+	font-weight: 700;
+	font-size: 12px;
+	width: 26px;
+	height: 26px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	margin-top: 1px;
+	box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3);
+}
+.wpts-doc-step__content {
+	font-size: 13.5px;
+	color: #334155;
+	line-height: 1.65;
+	flex-grow: 1;
+}
+
+/* Blockquotes & Notice Callouts */
+.wpts-doc-blockquote {
+	margin: 16px 0;
+	padding: 12px 18px;
+	background: #f0f9ff;
+	border-left: 4px solid #3b82f6;
+	border-radius: 0 8px 8px 0;
+	color: #0369a1;
+	font-size: 13.5px;
+	line-height: 1.6;
+}
+
+/* Inline Marks & Keyboard Badges */
+.wpts-doc-mark {
+	background: #fef08a;
+	color: #854d0e;
+	padding: 1px 4px;
+	border-radius: 3px;
+	font-weight: 600;
+}
+
+.wpts-doc-kbd {
+	background: #f8fafc;
+	border: 1px solid #cbd5e1;
+	border-bottom-width: 2px;
+	color: #1e293b;
+	padding: 2px 6px;
+	border-radius: 5px;
+	font-size: 11.5px;
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+	font-weight: 600;
+}
+
+/* Math & Equations */
+.wpts-doc-math {
+	background: #fdf4ff;
+	color: #86198f;
+	padding: 2px 6px;
+	border-radius: 4px;
+	font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+	font-size: 12.5px;
+	font-weight: 600;
+	border: 1px solid #f0abfc;
+}
+
+.wpts-doc-math-block {
+	margin: 16px 0;
+	padding: 14px 20px;
+	background: #fdf4ff;
+	border: 1px solid #f0abfc;
+	border-radius: 8px;
+	color: #701a75;
+	font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+	font-size: 13px;
+	line-height: 1.6;
+	overflow-x: auto;
+}
+
+/* Modern Table Styles */
+.wpts-doc-table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 13px;
+	background: #ffffff;
+	border: 1px solid #e2e8f0;
+	border-radius: 8px;
+	overflow: hidden;
+}
+
+.wpts-doc-table th {
+	background: #f8fafc;
+	color: #475569;
+	font-weight: 700;
+	padding: 10px 14px;
+	border-bottom: 2px solid #e2e8f0;
+	text-align: left;
+}
+
+.wpts-doc-table td {
+	padding: 10px 14px;
+	border-bottom: 1px solid #f1f5f9;
+	color: #334155;
+	vertical-align: top;
+	line-height: 1.6;
+}
+
+.wpts-doc-table tr:nth-child(even) td {
+	background: #fcfdfe;
+}
+
+.wpts-doc-table tr:hover td {
+	background: #f8fafc;
+}
+
+/* Search Log Toolbar & Pagination */
+.wpts-log-toolbar {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 10px;
+	background: var(--wpts-gray-50);
+	border: 1px solid var(--wpts-gray-200);
+	border-radius: 8px;
+	padding: 10px 14px;
+	margin-bottom: 12px;
+}
+
+.wpts-filter-pills {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	flex-wrap: wrap;
+}
+
+.wpts-filter-pill {
+	background: #ffffff;
+	border: 1px solid var(--wpts-gray-200);
+	border-radius: 99px;
+	padding: 4px 12px;
+	font-size: 12px;
+	font-weight: 600;
+	color: var(--wpts-gray-600);
+	cursor: pointer;
+	transition: all 0.15s ease;
+	line-height: 1.4;
+}
+
+.wpts-filter-pill:hover {
+	background: var(--wpts-gray-100);
+	color: var(--wpts-gray-900);
+}
+
+.wpts-filter-pill.is-active {
+	background: var(--wpts-blue);
+	border-color: var(--wpts-blue);
+	color: #ffffff;
+}
+
+.wpts-table-loading-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(255, 255, 255, 0.75);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 13.5px;
+	font-weight: 600;
+	color: var(--wpts-blue);
+	z-index: 5;
+	backdrop-filter: blur(1px);
+}
+
+.wpts-pagination-bar {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 12px;
+	margin-top: 14px;
+	padding-top: 14px;
+	border-top: 1px solid var(--wpts-gray-200);
+}
+
+.wpts-pagination-info {
+	font-size: 13px;
+	color: var(--wpts-gray-600);
+	font-weight: 500;
+}
+
+.wpts-pagination-nav {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.wpts-pagination-current {
+	font-size: 12.5px;
+	font-weight: 600;
+	color: var(--wpts-gray-700);
+	padding: 0 6px;
+}
+
+/* Keyword Badges with Link */
+.wpts-keyword-badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	background: var(--wpts-gray-100);
+	border: 1px solid var(--wpts-gray-200);
+	border-radius: 6px;
+	padding: 3px 8px;
+	font-size: 12px;
+	font-weight: 600;
+	color: var(--wpts-blue);
+	text-decoration: none;
+	transition: all 0.15s ease;
+}
+.wpts-keyword-badge:hover {
+	background: var(--wpts-blue-light);
+	border-color: var(--wpts-blue-border);
+	color: var(--wpts-blue-dark);
+	transform: translateY(-1px);
+}
+.wpts-keyword-count {
+	background: #ffffff;
+	color: var(--wpts-gray-600);
+	border-radius: 99px;
+	padding: 1px 6px;
+	font-size: 10.5px;
+	font-weight: 700;
+	border: 1px solid var(--wpts-gray-200);
+}
+
+/* Anchor Jump Highlight */
+.wpts-heading-anchor-target {
+	background: #eff6ff;
+	border-radius: 6px;
+	box-shadow: 0 0 0 6px #dbeafe;
+	transition: all 0.3s ease;
+}

@@ -1,0 +1,703 @@
+# Copyright (C) 2026 Amitkumar Dudhat
+# This file is distributed under the GPL-2.0-or-later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Turbo Search 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/turbo-search\n"
+"Last-Translator: Amitkumar Dudhat <amit000790@gmail.com>\n"
+"Language-Team: English <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-09-04 12:28+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: Turbo Search POT Generator 1.0\n"
+"X-Domain: turbo-search\n"
+
+#. Plugin Name of the plugin
+msgid "Turbo Search"
+msgstr ""
+
+#. Plugin URI of the plugin
+msgid "https://wordpress.org/plugins/turbo-search"
+msgstr ""
+
+#. Description of the plugin
+msgid "Ultra-fast live search engine for WordPress & WooCommerce with MySQL FULLTEXT, Typesense, Elasticsearch, PDF search, AI vector search, and analytics."
+msgstr ""
+
+#. Author of the plugin
+msgid "Amitkumar Dudhat"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://profiles.wordpress.org/wpamitkumar"
+msgstr ""
+
+#: includes/cpt/class-cpt-manager.php:44
+msgctxt "post type singular name"
+msgid "Resource"
+msgstr ""
+
+#: includes/cpt/class-cpt-manager.php:43
+msgctxt "post type general name"
+msgid "Resources"
+msgstr ""
+
+#: templates/search-results.php:108
+msgid "%1$d results for \"%2$s\""
+msgstr ""
+
+#: templates/search-results.php:81
+#: templates/search-results.php:96
+msgid "%d matching items"
+msgstr ""
+
+#: includes/i18n/class-i18n-loader.php:30
+msgid "%d results"
+msgstr ""
+
+#: includes/api/class-rest-admin.php:547
+msgid "(Untitled)"
+msgstr ""
+
+#: includes/multisite/class-network.php:45
+msgid "Actions"
+msgstr ""
+
+#: includes/cpt/class-cpt-manager.php:45
+#: includes/cpt/class-cpt-manager.php:46
+msgid "Add New Resource"
+msgstr ""
+
+#: templates/shortcode.php:177
+msgid "Add to Cart"
+msgstr ""
+
+#: templates/shortcode.php:178
+msgid "Added to cart!"
+msgstr ""
+
+#: includes/api/class-rest-admin.php:594
+msgid "All search tracking logs, click data, and analytics events have been purged successfully."
+msgstr ""
+
+#: includes/api/class-rest-admin.php:262
+msgid "All settings restored to factory defaults."
+msgstr ""
+
+#: includes/multisite/class-network.php:43
+msgid "Blog ID"
+msgstr ""
+
+#: includes/admin/class-admin-page.php:63
+msgid "Cache"
+msgstr ""
+
+#: includes/admin/class-admin-page.php:62
+msgid "Cache Settings"
+msgstr ""
+
+#: includes/admin/class-site-health.php:61
+msgid "Check Engine Settings"
+msgstr ""
+
+#: templates/shortcode.php:171
+msgid "Clear search"
+msgstr ""
+
+#: templates/shortcode.php:282
+msgid "Compact Card"
+msgstr ""
+
+#: includes/api/class-rest-admin.php:485
+msgid "Connected successfully! Memcached v%s"
+msgstr ""
+
+#: includes/api/class-rest-admin.php:420
+msgid "Connected successfully! Redis v%s (DB %d)"
+msgstr ""
+
+#: includes/api/class-rest-admin.php:358
+msgid "Connected! Cluster: %s (v%s, status: %s)"
+msgstr ""
+
+#: includes/api/class-rest-admin.php:329
+msgid "Connected! Collection: %s (%d docs)"
+msgstr ""
+
+#: includes/ajax-handlers.php:356
+msgid "Connected! Memcached v%s"
+msgstr ""
+
+#: includes/ajax-handlers.php:323
+msgid "Connected! Redis v%s"
+msgstr ""
+
+#: includes/api/class-rest-admin.php:334
+msgid "Connection failed. Please check host, port, and API key."
+msgstr ""
+
+#: includes/api/class-rest-admin.php:363
+msgid "Connection failed. Please verify endpoint and credentials."
+msgstr ""
+
+#: templates/search-results.php:76
+msgid "Content Type"
+msgstr ""
+
+#: includes/ajax-handlers.php:97
+msgid "Could not add product to cart."
+msgstr ""
+
+#: includes/api/class-rest-admin.php:471
+msgid "Could not connect to Memcached at %s:%d (%s)"
+msgstr ""
+
+#: includes/api/class-rest-admin.php:398
+msgid "Could not connect to Redis at %s:%d. Please check if the Redis service is running."
+msgstr ""
+
+#: includes/ajax-handlers.php:249
+msgid "Could not flush Typesense."
+msgstr ""
+
+#: includes/admin/class-settings-exporter.php:54
+msgid "Could not read uploaded file."
+msgstr ""
+
+#: includes/api/class-rest-admin.php:290
+msgid "Could not save synonym group."
+msgstr ""
+
+#: includes/ajax-handlers.php:122
+msgid "Could not save synonym."
+msgstr ""
+
+#: templates/shortcode.php:289
+msgid "Dark"
+msgstr ""
+
+#: includes/admin/class-admin-page.php:33
+msgid "Dashboard"
+msgstr ""
+
+#: includes/admin/class-admin-page.php:32
+msgid "Dashboard & Analytics"
+msgstr ""
+
+#: includes/multisite/class-network.php:44
+msgid "DB Version"
+msgstr ""
+
+#: includes/admin/class-admin-page.php:83
+msgid "Dev Hooks"
+msgstr ""
+
+#: includes/admin/class-admin-page.php:82
+msgid "Developer Hooks Reference"
+msgstr ""
+
+#: templates/search-results.php:122
+#: templates/shortcode.php:175
+msgid "Did you mean:"
+msgstr ""
+
+#: includes/admin/class-admin-page.php:93
+msgid "Documentation"
+msgstr ""
+
+#: includes/admin/class-admin-page.php:92
+msgid "Documentation & User Guide"
+msgstr ""
+
+#: includes/cpt/class-cpt-manager.php:47
+msgid "Edit Resource"
+msgstr ""
+
+#: includes/api/class-rest-admin.php:558
+msgid "Failed to write Post #%d to search engine index."
+msgstr ""
+
+#: templates/shortcode.php:173
+msgid "Favorites"
+msgstr ""
+
+#: templates/shortcode.php:269
+msgid "Filter by Post Types (leave blank for all):"
+msgstr ""
+
+#: templates/search-results.php:71
+msgid "Filter Results"
+msgstr ""
+
+#: includes/ajax-handlers.php:108
+#: includes/ajax-handlers.php:129
+#: includes/ajax-handlers.php:145
+#: includes/ajax-handlers.php:214
+#: includes/ajax-handlers.php:226
+#: includes/ajax-handlers.php:238
+#: includes/ajax-handlers.php:257
+#: includes/ajax-handlers.php:277
+#: includes/ajax-handlers.php:296
+#: includes/ajax-handlers.php:332
+#: includes/ajax-handlers.php:366
+#: includes/admin/class-settings-exporter.php:15
+#: includes/analytics/class-export.php:16
+msgid "Forbidden"
+msgstr ""
+
+#: templates/shortcode.php:291
+msgid "Glassmorphism"
+msgstr ""
+
+#: includes/admin/class-site-health.php:103
+msgid "Go to Index Manager"
+msgstr ""
+
+#: templates/search-results.php:191
+msgid "Go to page %d"
+msgstr ""
+
+#: templates/search-results.php:112
+msgid "Grid"
+msgstr ""
+
+#: templates/shortcode.php:281
+msgid "Grid Cards"
+msgstr ""
+
+#: includes/api/class-rest-admin.php:221
+msgid "Guest / Logged-out"
+msgstr ""
+
+#: includes/admin/class-admin-page.php:42
+#: includes/admin/class-admin-page.php:43
+msgid "Index Manager"
+msgstr ""
+
+#: templates/shortcode.php:205
+msgid "Instant search bar with multi-post-type support, debounce, voice search, and theme options."
+msgstr ""
+
+#: includes/admin/class-settings-exporter.php:59
+msgid "Invalid backup file format."
+msgstr ""
+
+#: includes/ajax-handlers.php:134
+#: includes/api/class-rest-admin.php:296
+msgid "Invalid ID."
+msgstr ""
+
+#: includes/api/class-rest-admin.php:245
+msgid "Invalid payload."
+msgstr ""
+
+#: includes/ajax-handlers.php:65
+msgid "Invalid product ID."
+msgstr ""
+
+#: includes/api/class-rest-admin.php:545
+msgid "Item #%d (\"%s\") successfully indexed into %s search engine!"
+msgstr ""
+
+#: includes/api/class-rest-admin.php:534
+msgid "Item #%d (status: %s) is not eligible for indexing. Must be published or inherited."
+msgstr ""
+
+#: includes/search/class-facets.php:98
+msgid "Last 24 hours"
+msgstr ""
+
+#: templates/shortcode.php:288
+msgid "Light (Default)"
+msgstr ""
+
+#: templates/search-results.php:115
+msgid "List"
+msgstr ""
+
+#: templates/shortcode.php:280
+msgid "List View"
+msgstr ""
+
+#: templates/shortcode.php:165
+msgid "Listening… Speak now"
+msgstr ""
+
+#: includes/admin/class-admin-page.php:167
+msgid "Loading Turbo Search React Application…"
+msgstr ""
+
+#: includes/multisite/class-network.php:61
+msgid "Manage Index"
+msgstr ""
+
+#: includes/class-block.php:92
+msgid "Media & Documents"
+msgstr ""
+
+#: includes/api/class-rest-admin.php:490
+msgid "Memcached Error: %s"
+msgstr ""
+
+#: includes/api/class-rest-admin.php:443
+msgid "Memcached is reachable at %s:%d (%s). (Note: Install PHP ext-memcached for native caching)"
+msgstr ""
+
+#: templates/shortcode.php:167
+msgid "Microphone permission was denied. Please allow microphone access in your browser settings to use voice search."
+msgstr ""
+
+#: templates/shortcode.php:290
+msgid "Minimalist"
+msgstr ""
+
+#: templates/search-results.php:200
+msgid "Next"
+msgstr ""
+
+#: templates/search-results.php:135
+msgid "No matching documents found"
+msgstr ""
+
+#: includes/cpt/class-cpt-manager.php:51
+msgid "No resources found in Trash."
+msgstr ""
+
+#: includes/cpt/class-cpt-manager.php:50
+msgid "No resources found."
+msgstr ""
+
+#: includes/i18n/class-i18n-loader.php:29
+#: templates/shortcode.php:179
+msgid "No results found."
+msgstr ""
+
+#: templates/shortcode.php:174
+msgid "No saved favorites yet."
+msgstr ""
+
+#: includes/search/class-facets.php:102
+msgid "Older"
+msgstr ""
+
+#: includes/search/class-facets.php:100
+msgid "Past month"
+msgstr ""
+
+#: includes/search/class-facets.php:99
+msgid "Past week"
+msgstr ""
+
+#: includes/search/class-facets.php:101
+msgid "Past year"
+msgstr ""
+
+#: includes/admin/class-settings-exporter.php:45
+msgid "Permission denied."
+msgstr ""
+
+#: includes/ajax-handlers.php:336
+msgid "PHP ext-memcached is not installed on this server."
+msgstr ""
+
+#: includes/api/class-rest-admin.php:448
+msgid "PHP ext-memcached is not loaded and Memcached at %s:%d is unreachable (%s)"
+msgstr ""
+
+#: includes/ajax-handlers.php:300
+msgid "PHP ext-redis is not installed on this server."
+msgstr ""
+
+#: includes/api/class-rest-admin.php:388
+msgid "PHP ext-redis is not loaded and Redis at %s:%d is unreachable (%s)"
+msgstr ""
+
+#: templates/shortcode.php:265
+msgid "Placeholder Text:"
+msgstr ""
+
+#: includes/admin/class-settings-exporter.php:49
+msgid "Please choose a valid JSON file."
+msgstr ""
+
+#: includes/api/class-rest-admin.php:514
+msgid "Please provide a valid numeric Post or Document ID."
+msgstr ""
+
+#: includes/api/class-rest-admin.php:522
+msgid "Post or Document #%d was not found in the database."
+msgstr ""
+
+#: templates/search-results.php:177
+msgid "Prev"
+msgstr ""
+
+#: templates/search-results.php:159
+msgid "Price: %s dollars"
+msgstr ""
+
+#: includes/api/class-rest-admin.php:591
+msgid "Pruned search logs older than %d days."
+msgstr ""
+
+#: includes/multisite/class-network.php:75
+msgid "Re-index All Sites"
+msgstr ""
+
+#: templates/shortcode.php:172
+msgid "Recent Searches"
+msgstr ""
+
+#: includes/api/class-rest-admin.php:406
+msgid "Redis authentication failed: Invalid password."
+msgstr ""
+
+#: includes/api/class-rest-admin.php:425
+msgid "Redis Error: %s"
+msgstr ""
+
+#: includes/api/class-rest-admin.php:383
+msgid "Redis service is reachable at %s:%d (Note: Install PHP ext-redis for native caching)"
+msgstr ""
+
+#: templates/shortcode.php:278
+msgid "Results Layout:"
+msgstr ""
+
+#: templates/shortcode.php:295
+msgid "Results per page:"
+msgstr ""
+
+#: includes/ajax-handlers.php:352
+msgid "Round-trip test failed."
+msgstr ""
+
+#: templates/search-results.php:57
+#: templates/search-results.php:62
+#: templates/shortcode.php:248
+msgid "Search"
+msgstr ""
+
+#: includes/api/class-rest-admin.php:569
+msgid "Search cache flushed successfully (cache driver: %s)."
+msgstr ""
+
+#: includes/admin/class-site-health.php:34
+msgid "Search Engine (%s) is healthy"
+msgstr ""
+
+#: includes/admin/class-site-health.php:51
+msgid "Search Engine (%s) is unreachable"
+msgstr ""
+
+#: templates/search-results.php:124
+msgid "Search for %s instead"
+msgstr ""
+
+#: includes/api/class-rest-admin.php:580
+msgid "Search index & queries for engine \"%s\" wiped and flushed successfully."
+msgstr ""
+
+#: includes/admin/class-site-health.php:86
+msgid "Search index coverage is optimal."
+msgstr ""
+
+#: includes/admin/class-site-health.php:80
+msgid "Search index is up to date (%d of %d posts)"
+msgstr ""
+
+#: includes/admin/class-site-health.php:93
+msgid "Search index needs updating (%d of %d posts indexed)"
+msgstr ""
+
+#: includes/cpt/class-cpt-manager.php:49
+msgid "Search Resources"
+msgstr ""
+
+#: includes/admin/class-admin-page.php:52
+msgid "Search Settings"
+msgstr ""
+
+#: templates/shortcode.php:180
+msgid "Searching…"
+msgstr ""
+
+#: includes/class-block.php:122
+#: includes/i18n/class-i18n-loader.php:28
+#: templates/shortcode.php:32
+#: templates/shortcode.php:221
+#: templates/shortcode.php:249
+msgid "Search…"
+msgstr ""
+
+#: includes/admin/class-admin-page.php:53
+#: includes/admin/class-admin-page.php:175
+msgid "Settings"
+msgstr ""
+
+#: includes/admin/class-settings-exporter.php:76
+msgid "Settings imported successfully!"
+msgstr ""
+
+#: includes/api/class-rest-admin.php:252
+msgid "Settings saved successfully!"
+msgstr ""
+
+#: includes/multisite/class-network.php:42
+msgid "Site"
+msgstr ""
+
+#: includes/multisite/class-network.php:38
+msgid "Sites in this Network"
+msgstr ""
+
+#: includes/admin/class-site-health.php:99
+msgid "Some published posts may not be in the search index yet. Run a re-index to update search results."
+msgstr ""
+
+#: includes/ajax-handlers.php:138
+msgid "Synonym deleted."
+msgstr ""
+
+#: includes/api/class-rest-admin.php:302
+msgid "Synonym group deleted."
+msgstr ""
+
+#: includes/api/class-rest-admin.php:285
+msgid "Synonym group saved!"
+msgstr ""
+
+#: includes/ajax-handlers.php:120
+msgid "Synonym saved!"
+msgstr ""
+
+#: includes/ajax-handlers.php:115
+#: includes/api/class-rest-admin.php:278
+msgid "Synonym words cannot be empty."
+msgstr ""
+
+#: includes/admin/class-site-health.php:41
+msgid "The active search engine (%s) and cache driver (%s) are connected and serving results."
+msgstr ""
+
+#: includes/admin/class-site-health.php:57
+msgid "The configured search engine is unreachable. Searches may be falling back to MySQL."
+msgstr ""
+
+#: templates/shortcode.php:286
+msgid "Theme Style:"
+msgstr ""
+
+#: includes/admin/class-admin-page.php:72
+msgid "Tracking & Search Log"
+msgstr ""
+
+#: includes/admin/class-admin-page.php:73
+msgid "Tracking and Analytics"
+msgstr ""
+
+#: templates/search-results.php:136
+msgid "Try broadening your search keywords or checking for spelling errors."
+msgstr ""
+
+#: includes/admin/class-admin-page.php:20
+#: includes/admin/class-admin-page.php:21
+#: includes/admin/class-site-health.php:37
+#: includes/admin/class-site-health.php:54
+#: includes/admin/class-site-health.php:83
+#: includes/admin/class-site-health.php:96
+#: includes/multisite/class-network.php:21
+msgid "Turbo Search"
+msgstr ""
+
+#: templates/shortcode.php:204
+msgid "Turbo Search Bar"
+msgstr ""
+
+#: includes/admin/class-site-health.php:17
+msgid "Turbo Search Engine Status"
+msgstr ""
+
+#: includes/admin/class-site-health.php:21
+msgid "Turbo Search Index Coverage"
+msgstr ""
+
+#: includes/multisite/class-network.php:20
+msgid "Turbo Search Network"
+msgstr ""
+
+#: includes/ajax-handlers.php:247
+msgid "Typesense index cleared."
+msgstr ""
+
+#: includes/api/class-rest-admin.php:495
+msgid "Unknown target driver."
+msgstr ""
+
+#: templates/shortcode.php:176
+msgid "View all results →"
+msgstr ""
+
+#: includes/cpt/class-cpt-manager.php:48
+msgid "View Resource"
+msgstr ""
+
+#: templates/shortcode.php:166
+msgid "Voice search"
+msgstr ""
+
+#: templates/shortcode.php:169
+msgid "Voice search is not supported in this browser."
+msgstr ""
+
+#: templates/shortcode.php:168
+msgid "Voice search requires a secure HTTPS connection. Please use HTTPS or localhost."
+msgstr ""
+
+#: templates/shortcode.php:261
+msgid "Widget Title:"
+msgstr ""
+
+#: includes/ajax-handlers.php:70
+msgid "WooCommerce is not active."
+msgstr ""
+
+#: turbo-search.php:40
+msgid "Turbo Search requires PHP %s or higher."
+msgstr ""
+
+#: includes/multisite/class-network.php:36
+msgid "Turbo Search: Network"
+msgstr ""
+
+#: turbo-search.php:116
+#: turbo-search.php:127
+#: turbo-search.php:138
+#: turbo-search.php:150
+#: turbo-search.php:159
+#: turbo-search.php:173
+#: turbo-search.php:185
+#: turbo-search.php:197
+#: turbo-search.php:208
+#: turbo-search.php:220
+#: turbo-search.php:231
+msgid "You do not have permission to do this."
+msgstr ""
+
+#: includes/admin/class-admin-page.php:160
+msgid "You do not have permission to view this page."
+msgstr ""
+
+#: includes/ajax-handlers.php:286
+msgid "✅ Cache flushed (driver: %s)."
+msgstr ""
+
+#: templates/shortcode.php:170
+msgid "🎙️ Voice search is supported in Chrome, Edge, Safari, and Opera. On Firefox, please type your query."
+msgstr ""
+
+#: includes/analytics/class-trending.php:57
+msgid "🔥 Trending:"
+msgstr ""

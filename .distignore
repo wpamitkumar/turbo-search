@@ -1,0 +1,51 @@
+# Version Control & CI/CD
+.git
+.github
+.gitignore
+.gitattributes
+.distignore
+
+# Development Configuration & Linting
+.editorconfig
+phpcs.xml.dist
+
+# Developer Documentation & Repo Assets
+.wordpress-org/
+scratch/
+
+# Operating System & IDE Artifacts
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.fleet/
+
+# Package Managers & Build Logs
+node_modules/
+vendor/
+build/
+composer.json
+composer.lock
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Testing & Cache
+.phpunit.result.cache
+.phpunit.cache/
+coverage/
+*.log
+tmp/
+temp/
+
+# Environment & Secrets
+.env
+.env.*
+*.pem
+*.key
+*.zip
+*.tar.gz
+

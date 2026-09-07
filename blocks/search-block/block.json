@@ -1,0 +1,122 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "wpts/search-bar",
+	"version": "1.0.0",
+	"title": "Turbo Search Bar",
+	"category": "widgets",
+	"icon": "search",
+	"description": "Instant search with debounce, throttle, and full styling controls.",
+	"keywords": [
+		"search",
+		"instant",
+		"turbo",
+		"ajax"
+	],
+	"textdomain": "turbo-search",
+	"supports": {
+		"html": false,
+		"align": [
+			"wide",
+			"full"
+		]
+	},
+	"attributes": {
+		"placeholder": {
+			"type": "string",
+			"default": "Search…"
+		},
+		"postType": {
+			"type": "string",
+			"default": ""
+		},
+		"perPage": {
+			"type": "number",
+			"default": 8
+		},
+		"debounce": {
+			"type": "number",
+			"default": 200
+		},
+		"throttle": {
+			"type": "number",
+			"default": 0
+		},
+		"minChars": {
+			"type": "number",
+			"default": 2
+		},
+		"showPostType": {
+			"type": "boolean",
+			"default": true
+		},
+		"showExcerpt": {
+			"type": "boolean",
+			"default": true
+		},
+		"layout": {
+			"type": "string",
+			"default": ""
+		},
+		"openInNewTab": {
+			"type": "boolean",
+			"default": false
+		},
+		"primaryColor": {
+			"type": "string",
+			"default": "#2563eb"
+		},
+		"backgroundColor": {
+			"type": "string",
+			"default": "#ffffff"
+		},
+		"textColor": {
+			"type": "string",
+			"default": "#1e293b"
+		},
+		"borderColor": {
+			"type": "string",
+			"default": "#e2e8f0"
+		},
+		"borderRadius": {
+			"type": "number",
+			"default": 10
+		},
+		"inputSize": {
+			"type": "string",
+			"default": "medium"
+		},
+		"maxWidth": {
+			"type": "number",
+			"default": 640
+		},
+		"dropdownMaxHeight": {
+			"type": "number",
+			"default": 400
+		},
+		"highlightColor": {
+			"type": "string",
+			"default": "#fef08a"
+		},
+		"showVoice": {
+			"type": "boolean",
+			"default": true
+		},
+		"enableCommandK": {
+			"type": "boolean",
+			"default": true
+		},
+		"categoryTabs": {
+			"type": "boolean",
+			"default": true
+		},
+		"quickAddToCart": {
+			"type": "boolean",
+			"default": true
+		},
+		"theme": {
+			"type": "string",
+			"default": "light"
+		}
+	}
+}

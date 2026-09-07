@@ -1,0 +1,202 @@
+/**
+* Turbo Search: Admin Stylesheet
+*/
+.wpts-wrap {
+	max-width: 1100px;
+	margin-top: 20px;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, sans-serif;
+}
+
+.wpts-wrap h1 {
+	font-size: 24px;
+	font-weight: 700;
+	margin-bottom: 16px;
+}
+
+/* Section Title */
+.wpts-section-title {
+	font-size: 16px;
+	font-weight: 700;
+	margin: 32px 0 8px;
+	padding-bottom: 8px;
+	border-bottom: 1px solid #e2e8f0;
+	color: #1e293b;
+}
+
+/* Status Bar */
+.wpts-status-bar {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	background: #f8fafc;
+	border: 1px solid #e2e8f0;
+	border-radius: 8px;
+	padding: 10px 16px;
+	margin-bottom: 24px;
+	flex-wrap: wrap;
+}
+.wpts-status-bar__item {
+	font-size: 13px;
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+.wpts-status-bar__item.is-ok { color: #16a34a; }
+.wpts-status-bar__item.is-warn { color: #d97706; }
+.wpts-status-bar__item.is-muted { color: #64748b; }
+
+/* Tabs Navigation */
+.wpts-tabs {
+	display: flex;
+	gap: 4px;
+	border-bottom: 1px solid #c3c4c7;
+	margin-bottom: 0;
+	align-items: flex-end;
+}
+.wpts-tab {
+	padding: 8px 16px;
+	font-size: 13.5px;
+	font-weight: 600;
+	color: #50575e;
+	text-decoration: none;
+	border: 1px solid transparent;
+	border-bottom: none;
+	border-radius: 6px 6px 0 0;
+	background: #f0f0f1;
+	transition: all 0.15s ease;
+}
+.wpts-tab:hover {
+	background: #fff;
+	color: #1d2327;
+}
+.wpts-tab.is-active {
+	background: #fff;
+	color: #1d2327;
+	border-color: #c3c4c7;
+	border-bottom-color: #fff;
+	margin-bottom: -1px;
+}
+.wpts-tabs-content {
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	border-top: none;
+	padding: 24px;
+	margin-bottom: 24px;
+}
+
+/* Dashboard & KPI Cards */
+.wpts-dash__header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 24px;
+	flex-wrap: wrap;
+	gap: 16px;
+}
+.wpts-dash__header h1 { margin: 0; }
+.wpts-dash__header-actions { display: flex; gap: 8px; }
+
+.wpts-cards {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	gap: 16px;
+	margin-bottom: 28px;
+}
+.wpts-card {
+	background: #ffffff;
+	border: 1px solid #e2e8f0;
+	border-radius: 8px;
+	padding: 16px;
+	display: flex;
+	gap: 12px;
+	align-items: center;
+}
+.wpts-card__icon {
+	font-size: 24px;
+	width: 44px;
+	height: 44px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: #f8fafc;
+	border-radius: 8px;
+	flex-shrink: 0;
+}
+.wpts-card__value {
+	font-size: 20px;
+	font-weight: 700;
+	color: #0f172a;
+}
+.wpts-card__label {
+	font-size: 12px;
+	color: #64748b;
+	font-weight: 500;
+}
+
+/* Panels & Tables */
+.wpts-panel {
+	background: #ffffff;
+	border: 1px solid #e2e8f0;
+	border-radius: 8px;
+	margin-bottom: 24px;
+	overflow: hidden;
+}
+.wpts-panel__head {
+	padding: 14px 20px;
+	background: #f8fafc;
+	border-bottom: 1px solid #e2e8f0;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.wpts-panel__head h2 {
+	font-size: 15px;
+	font-weight: 700;
+	margin: 0;
+	color: #1e293b;
+}
+.wpts-panel__body { padding: 20px; }
+.wpts-panel__body--flush { padding: 0; }
+
+.wpts-table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 13px;
+}
+.wpts-table th {
+	background: #f8fafc;
+	padding: 10px 16px;
+	text-align: left;
+	font-weight: 600;
+	color: #475569;
+	border-bottom: 1px solid #e2e8f0;
+}
+.wpts-table td {
+	padding: 10px 16px;
+	border-bottom: 1px solid #f1f5f9;
+	color: #334155;
+}
+.wpts-table tr:last-child td { border-bottom: none; }
+.wpts-table--striped tr:nth-child(even) td { background: #fafafa; }
+
+/* Badges */
+.wpts-badge {
+	display: inline-block;
+	padding: 2px 8px;
+	border-radius: 99px;
+	font-size: 11px;
+	font-weight: 700;
+	text-transform: uppercase;
+}
+.wpts-badge--action { background: #dcfce7; color: #15803d; }
+.wpts-badge--filter { background: #fee2e2; color: #b91c1c; }
+
+/* Weight Sliders */
+.wpts-weight-row {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	margin-bottom: 12px;
+}
+.wpts-weight-label { width: 140px; font-weight: 600; }
+.wpts-weight-val { font-weight: 700; color: #2563eb; width: 40px; }

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <!-- Matching Dark Navy-Slate Rounded Tile (#0f172a) -->
+  <rect width="256" height="256" rx="54" fill="#0f172a"/>
+  
+  <!-- Standard Direction Magnifying Glass (Lens top-left, handle bottom-right ↘) -->
+  <circle cx="114" cy="114" r="54" fill="none" stroke="#ffffff" stroke-width="15"/>
+  <line x1="152" y1="152" x2="198" y2="198" stroke="#ffffff" stroke-width="17" stroke-linecap="round"/>
+  
+  <!-- Vibrant Electric Cyan Lightning Bolt -->
+  <polygon points="120,68 96,116 116,116 104,158 136,108 116,108" fill="#06b6d4" stroke="#ffffff" stroke-width="2" stroke-linejoin="round"/>
+</svg>

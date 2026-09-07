@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  php-lint:
+    name: PHP Syntax Check (${{ matrix.php }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: ['7.4', '8.0', '8.1', '8.2', '8.3']
+      fail-fast: false
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mbstring, json, mysqli, zip, simplexml, xml
+          coverage: none
+
+      - name: Lint PHP Files
+        run: |
+          find . -name "*.php" -not -path "./scratch/*" -not -path "./vendor/*" -not -path "./build/*" -exec php -l {} \;
+
+  plugin-validation:
+    name: Plugin Integrity & Package Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Check Essential Files
+        run: |
+          test -f turbo-search.php || { echo "turbo-search.php is missing"; exit 1; }
+          test -f readme.txt || { echo "readme.txt is missing"; exit 1; }
+          test -f README.md || { echo "README.md is missing"; exit 1; }
+          test -f .distignore || { echo ".distignore is missing"; exit 1; }
+          echo "All essential plugin files exist."
+
+      - name: Test Production ZIP Creation
+        run: |
+          mkdir -p build/turbo-search
+          rsync -av --exclude-from='.distignore' ./ build/turbo-search/
+          cd build
+          zip -r turbo-search.zip turbo-search/
+          test -f turbo-search.zip || { echo "ZIP package generation failed"; exit 1; }
+          echo "Package created successfully: $(ls -lh turbo-search.zip)"
+

@@ -1,0 +1,36 @@
+{
+  "name": "wpamitkumar/turbo-search",
+  "description": "Ultra-fast live search engine for WordPress & WooCommerce with MySQL FULLTEXT, Typesense, Elasticsearch, PDF search, AI vector search, and analytics.",
+  "type": "wordpress-plugin",
+  "license": "GPL-2.0-or-later",
+  "homepage": "https://github.com/wpamitkumar/turbo-search",
+  "authors": [
+    {
+      "name": "Amitkumar Dudhat",
+      "homepage": "https://profiles.wordpress.org/wpamitkumar",
+      "role": "Developer"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/wpamitkumar/turbo-search/issues",
+    "source": "https://github.com/wpamitkumar/turbo-search"
+  },
+  "require": {
+    "php": ">=7.4"
+  },
+  "require-dev": {
+    "squizlabs/php_codesniffer": "^3.7",
+    "wp-coding-standards/wpcs": "^3.0",
+    "dealerdirect/phpcodesniffer-composer-installer": "^1.0"
+  },
+  "scripts": {
+    "lint": "phpcs",
+    "format": "phpcbf"
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
+  }
+}
+
