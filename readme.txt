@@ -3,7 +3,7 @@ Contributors: wpamitkumar
 Donate link: https://profiles.wordpress.org/wpamitkumar
 Tags: search, ajax search, live search, woocommerce search, product search
 Requires at least: 6.0
-Tested up to: 6.7
+Tested up to: 7.1
 Requires PHP: 7.4
 Stable tag: 1.0.0
 License: GPLv2 or later

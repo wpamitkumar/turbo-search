@@ -5,7 +5,7 @@
  * Description:       Ultra-fast live search engine for WordPress & WooCommerce with MySQL FULLTEXT, Typesense, Elasticsearch, PDF search, AI vector search, and analytics.
  * Version:           1.0.0
  * Requires at least: 6.0
- * Tested up to:      6.7
+ * Tested up to:      7.1
  * Requires PHP:      7.4
  * Author:            Amitkumar Dudhat
  * Author URI:        https://profiles.wordpress.org/wpamitkumar
