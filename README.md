@@ -326,20 +326,6 @@ turbo-search/
     └── turbo-search.pot      ← Translation template
 ```
 
----
-
-## Changelog
-
-### 1.0.0
-- Initial release
-- MySQL FULLTEXT engine (works on any host)
-- Typesense adapter (zero PHP SDK dependencies)
-- Multisite support with per-site table isolation
-- WPML + Polylang language filtering
-- REST API with pagination and filters
-- Shortcode, Widget, and keyboard-navigable instant-search UI
-- 15+ developer filters and actions
-- Dev Hooks reference page in WP admin
 
 ---
 
@@ -349,7 +335,7 @@ GPL-2.0-or-later - see [https://www.gnu.org/licenses/gpl-2.0.html](https://www.g
 
 ---
 
-## Dashboard & Analytics (v1.1.0)
+## Dashboard & Analytics
 
 ### Admin Menu Structure
 
@@ -470,7 +456,7 @@ Old records are pruned automatically via WP-Cron based on the retention period s
 
 ---
 
-### New Hooks (v1.1.0)
+### Cache & Lifecycle Hooks
 
 | Hook | Type | Description |
 |---|---|---|
@@ -487,19 +473,17 @@ Old records are pruned automatically via WP-Cron based on the retention period s
 
 ## Changelog
 
-### 1.1.0
-- Full **Dashboard** page with KPI cards and Chart.js volume chart
-- **Tracking** page: search log, top queries, zero-result report, index events, CSV exports
-- **Cache** page: Redis tab, Memcached tab, General tab, Flush tab with AJAX flush
-- Redis & Memcached settings configurable via admin UI (no wp-config.php required)
-- Live connection test for Redis and Memcached from admin UI
-- Cache auto-invalidates on every post insert, update, delete, and unpublish
-- `Tracker` class: two DB tables (`wpts_search_log`, `wpts_events`), daily cron pruning
-- 8 new developer hooks for cache lifecycle events
-- Admin CSS rewritten: dashboard cards, panels, tabs, tables, progress bars
-
 ### 1.0.0
-- Initial release
+- Initial release of Turbo Search.
+- Modern React-based single-page Admin Control Panel.
+- High-speed Typesense search adapter and zero-configuration MySQL FULLTEXT engine.
+- Dashboard with real-time KPI metrics, search performance volume chart, and engine status.
+- Tracking & Analytics: full query logs, top queries, zero-result gaps, CTR tracking, and CSV exports.
+- Multi-tier caching engine with Redis, Memcached, and WordPress Object Cache drivers.
+- Multisite network support with per-site table isolation.
+- WPML and Polylang multilingual search filtering.
+- REST API, Gutenberg Search Block, Shortcode, and Widget with instant live search UI.
+- Developer Hooks API with 20+ actions and filters.
 
 ---
 

@@ -137,5 +137,3 @@ Turbo Search provides a comprehensive developer hooks API with over 40 actions a
 
 = 1.0.0 =
 Initial production release of Turbo Search.
-
-
