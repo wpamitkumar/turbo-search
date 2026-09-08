@@ -109,12 +109,14 @@ class Synonyms {
 		}
 		$table = $wpdb->prefix . self::TABLE_SUFFIX;
 
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 		$exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) );
 		if ( ! $exists ) {
 			return (array) get_option( 'wpts_custom_synonyms_list', [] );
 		}
 
-		$results = $wpdb->get_results( "SELECT * FROM `{$table}` ORDER BY id DESC", ARRAY_A ); // phpcs:ignore
+		$results = $wpdb->get_results( "SELECT * FROM `{$table}` ORDER BY id DESC", ARRAY_A );
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 		return is_array( $results ) ? $results : [];
 	}
 
@@ -131,6 +133,7 @@ class Synonyms {
 		}
 
 		if ( $id > 0 ) {
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery
 			return false !== $wpdb->update(
 				$table,
 				[ 'words' => $words ],
@@ -140,6 +143,7 @@ class Synonyms {
 			);
 		}
 
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery
 		return false !== $wpdb->insert(
 			$table,
 			[ 'words' => $words ],
@@ -153,6 +157,7 @@ class Synonyms {
 	public static function delete_custom_synonym( int $id ): bool {
 		global $wpdb;
 		$table = $wpdb->prefix . self::TABLE_SUFFIX;
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery
 		return false !== $wpdb->delete( $table, [ 'id' => $id ], [ '%d' ] );
 	}
 
@@ -164,6 +169,7 @@ class Synonyms {
 		$charset = $wpdb->get_charset_collate();
 		$table   = $wpdb->prefix . self::TABLE_SUFFIX;
 
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 		$wpdb->query( "
 			CREATE TABLE IF NOT EXISTS `{$table}` (
 				`id`         BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -171,7 +177,8 @@ class Synonyms {
 				`created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 				PRIMARY KEY (`id`)
 			) ENGINE=InnoDB {$charset}
-		" ); // phpcs:ignore
+		" );
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 	}
 }
 

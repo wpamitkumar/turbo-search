@@ -128,7 +128,11 @@ final class Core {
 
 		$title = trim( (string) $post->post_title );
 		if ( '' === $title ) {
-			$title = (string) ( $post->post_name ?: sprintf( __( 'Post #%d', 'turbo-search' ), $post_id ) );
+			$title = (string) ( $post->post_name ?: sprintf(
+				/* translators: %d: post ID */
+				__( 'Post #%d', 'turbo-search' ),
+				$post_id
+			) );
 		}
 
 		$base_doc = [
@@ -390,6 +394,7 @@ final class Core {
 			// On ANY server failure or missing dependency, do not halt execution.
 			// WordPress Core will proceed with its native search query seamlessly.
 			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 				error_log( '[WPTS] Core search interception bypassed: ' . $e->getMessage() );
 			}
 		}

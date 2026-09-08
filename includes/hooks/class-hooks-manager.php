@@ -36,7 +36,8 @@ class Manager {
 
 	public function log_reindex( int $count, string $engine ): void {
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-			error_log( "[WPTS] Re-index complete via {$engine}. Posts processed: {$count}" ); // phpcs:ignore
+			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+			error_log( "[WPTS] Re-index complete via {$engine}. Posts processed: {$count}" );
 		}
 	}
 

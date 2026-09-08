@@ -23,12 +23,14 @@ class Export {
 		header( 'Pragma: no-cache' );
 		header( 'Expires: 0' );
 
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen
 		$output = fopen( 'php://output', 'w' );
 		if ( false === $output ) {
 			exit;
 		}
 
 		// UTF-8 BOM for Excel
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fputs
 		fputs( $output, "\xEF\xBB\xBF" );
 
 		if ( 'top' === $mode ) {
@@ -39,6 +41,7 @@ class Export {
 			self::write_searches_csv( $output, $days );
 		}
 
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
 		fclose( $output );
 		exit;
 	}
@@ -50,12 +53,13 @@ class Export {
 
 		fputcsv( $handle, [ 'Date/Time', 'Query', 'Results Found', 'From Cache', 'Engine', 'Cache Driver', 'Post Type', 'Lang', 'Duration (ms)', 'Clicked Position', 'Variant' ] );
 
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 		$exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) );
 		if ( ! $exists ) {
 			return;
 		}
 
-		$rows = $wpdb->get_results( $wpdb->prepare( // phpcs:ignore
+		$rows = $wpdb->get_results( $wpdb->prepare(
 			"SELECT searched_at, query, results, from_cache, engine, cache_driver, post_type, lang, duration_ms, clicked_position, variant
 			 FROM {$table}
 			 WHERE searched_at >= %s AND site_id = %d
@@ -63,6 +67,7 @@ class Export {
 			 LIMIT 10000",
 			$since, get_current_blog_id()
 		), ARRAY_A );
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 
 		foreach ( (array) $rows as $r ) {
 			fputcsv( $handle, [
@@ -88,12 +93,13 @@ class Export {
 
 		fputcsv( $handle, [ 'Rank', 'Query', 'Search Count', 'Avg Results', 'Avg Speed (ms)', 'Cache Hits' ] );
 
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 		$exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) );
 		if ( ! $exists ) {
 			return;
 		}
 
-		$rows = $wpdb->get_results( $wpdb->prepare( // phpcs:ignore
+		$rows = $wpdb->get_results( $wpdb->prepare(
 			"SELECT query, COUNT(*) as search_count, AVG(results) as avg_results, AVG(duration_ms) as avg_ms, SUM(from_cache) as cache_hits
 			 FROM {$table}
 			 WHERE searched_at >= %s AND site_id = %d
@@ -102,6 +108,7 @@ class Export {
 			 LIMIT 1000",
 			$since, get_current_blog_id()
 		), ARRAY_A );
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 
 		foreach ( (array) $rows as $i => $r ) {
 			fputcsv( $handle, [
@@ -122,12 +129,13 @@ class Export {
 
 		fputcsv( $handle, [ 'Query', 'Times Searched', 'Last Searched' ] );
 
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 		$exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) );
 		if ( ! $exists ) {
 			return;
 		}
 
-		$rows = $wpdb->get_results( $wpdb->prepare( // phpcs:ignore
+		$rows = $wpdb->get_results( $wpdb->prepare(
 			"SELECT query, COUNT(*) as search_count, MAX(searched_at) as last_searched
 			 FROM {$table}
 			 WHERE searched_at >= %s AND results = 0 AND site_id = %d
@@ -136,6 +144,7 @@ class Export {
 			 LIMIT 1000",
 			$since, get_current_blog_id()
 		), ARRAY_A );
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 
 		foreach ( (array) $rows as $r ) {
 			fputcsv( $handle, [

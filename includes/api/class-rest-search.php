@@ -116,7 +116,7 @@ class RestSearch {
 			return $result;
 		}
 
-		$route = $_SERVER['PATH_INFO'] ?? ( $_SERVER['REQUEST_URI'] ?? '' );
+		$route = isset( $_SERVER['PATH_INFO'] ) ? sanitize_text_field( wp_unslash( $_SERVER['PATH_INFO'] ) ) : ( isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '' );
 		// Never bypass authentication errors for admin endpoints
 		if ( false !== strpos( $route, '/wpts/v1/admin' ) ) {
 			return $result;
@@ -318,10 +318,12 @@ class RestSearch {
 		$table = $wpdb->prefix . 'wpts_index';
 		$like  = $wpdb->esc_like( $q ) . '%';
 
-		$rows = $wpdb->get_results( $wpdb->prepare( // phpcs:ignore
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
+		$rows = $wpdb->get_results( $wpdb->prepare(
 			"SELECT post_id, title, post_type FROM `{$table}` WHERE title LIKE %s ORDER BY title ASC LIMIT 5",
 			$like
 		), ARRAY_A );
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 
 		$suggestions = [];
 		foreach ( (array) $rows as $row ) {

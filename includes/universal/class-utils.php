@@ -39,6 +39,7 @@ class Utils {
 		if ( function_exists( 'wp_strip_all_tags' ) ) {
 			$text = wp_strip_all_tags( $text );
 		} else {
+			// phpcs:ignore WordPress.WP.AlternativeFunctions.strip_tags_strip_tags
 			$text = strip_tags( $text );
 		}
 		$text = html_entity_decode( $text, ENT_QUOTES | ENT_HTML5, 'UTF-8' );

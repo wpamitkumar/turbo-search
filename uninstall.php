@@ -6,7 +6,7 @@
 
 defined( 'WP_UNINSTALL_PLUGIN' ) || exit;
 
-$option_keys = [
+$wpts_option_keys = [
 	'wpts_post_types',
 	'wpts_enable_frontend_search',
 	'wpts_debounce_ms',
@@ -36,13 +36,17 @@ $option_keys = [
 function wpts_uninstall_site(): void {
 	global $wpdb;
 
+	// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 	// Drop custom tables
-	foreach ( [ 'wpts_index', 'wpts_events', 'wpts_search_log', 'wpts_synonyms', 'wpts_analytics_summary' ] as $suffix ) {
-		$wpdb->query( "DROP TABLE IF EXISTS `{$wpdb->prefix}{$suffix}`" ); // phpcs:ignore
-	}
+	$wpdb->query( "DROP TABLE IF EXISTS `{$wpdb->prefix}wpts_index`" );
+	$wpdb->query( "DROP TABLE IF EXISTS `{$wpdb->prefix}wpts_events`" );
+	$wpdb->query( "DROP TABLE IF EXISTS `{$wpdb->prefix}wpts_search_log`" );
+	$wpdb->query( "DROP TABLE IF EXISTS `{$wpdb->prefix}wpts_synonyms`" );
+	$wpdb->query( "DROP TABLE IF EXISTS `{$wpdb->prefix}wpts_analytics_summary`" );
 
 	// Remove all wpts_ options
-	$wpdb->query( "DELETE FROM `{$wpdb->options}` WHERE option_name LIKE 'wpts_%'" ); // phpcs:ignore
+	$wpdb->query( "DELETE FROM `{$wpdb->options}` WHERE option_name LIKE 'wpts_%'" );
+	// phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 }
 
 if ( is_multisite() ) {

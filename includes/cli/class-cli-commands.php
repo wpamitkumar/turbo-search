@@ -477,11 +477,12 @@ class Commands {
 		$indexed = $engine->get_indexed_count();
 
 		$log_table  = $wpdb->prefix . 'wpts_search_log';
-		$log_exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $log_table ) ); // phpcs:ignore
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
+		$log_exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $log_table ) );
 
 		$total_searches = $cache_hits = $cache_misses = $zero_results = 0;
 		if ( $log_exists ) {
-			$row = $wpdb->get_row( // phpcs:ignore
+			$row = $wpdb->get_row(
 				"SELECT COUNT(*) AS t, SUM(from_cache=1) AS h, SUM(from_cache=0) AS m, SUM(results=0) AS z
 				 FROM `{$log_table}`",
 				ARRAY_A
@@ -495,16 +496,17 @@ class Commands {
 		}
 
 		$evt_table  = $wpdb->prefix . 'wpts_events';
-		$evt_exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $evt_table ) ); // phpcs:ignore
+		$evt_exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $evt_table ) );
 
 		$upserts = $deletes = $flushes = 0;
 		if ( $evt_exists ) {
-			$evts = $wpdb->get_results( // phpcs:ignore
+			$evts = $wpdb->get_results(
 				"SELECT event_type, COUNT(*) AS cnt FROM `{$evt_table}`
 				 WHERE event_type IN ('index_upsert','index_delete','cache_flush_all')
 				 GROUP BY event_type",
 				ARRAY_A
 			);
+			// phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 			foreach ( (array) $evts as $e ) {
 				if     ( 'index_upsert'    === $e['event_type'] ) $upserts = (int) $e['cnt'];
 				elseif ( 'index_delete'    === $e['event_type'] ) $deletes = (int) $e['cnt'];
@@ -743,10 +745,12 @@ class Commands {
 			$wpdb->prefix . 'wpts_analytics_summary',
 		];
 		$missing = [];
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 		foreach ( $tables as $tbl ) {
-			$exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $tbl ) ); // phpcs:ignore
+			$exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $tbl ) );
 			if ( ! $exists ) $missing[] = $tbl;
 		}
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 
 		$rows[] = [
 			'Check'   => 'Database Tables',

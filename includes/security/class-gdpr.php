@@ -17,6 +17,7 @@ class GDPR {
 		global $wpdb;
 		$table = $wpdb->prefix . 'wpts_search_log';
 
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 		$exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) );
 		if ( ! $exists ) {
 			return;
@@ -29,7 +30,8 @@ class GDPR {
 		$retention_days = absint( \WPTS\Admin\Settings::get( 'tracking_retention_days', 90 ) );
 		$prune_cutoff   = gmdate( 'Y-m-d H:i:s', strtotime( "-{$retention_days} days" ) );
 
-		$wpdb->query( $wpdb->prepare( "DELETE FROM `{$table}` WHERE searched_at < %s", $prune_cutoff ) ); // phpcs:ignore
+		$wpdb->query( $wpdb->prepare( "DELETE FROM `{$table}` WHERE searched_at < %s", $prune_cutoff ) );
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 	}
 }
 

@@ -60,7 +60,8 @@ class CacheManager {
 			$results = $this->engine->search( $query, $filters, $per_page, $page );
 		} catch ( \Throwable $e ) {
 			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-				error_log( '[WPTS] Engine error: ' . $e->getMessage() ); // phpcs:ignore
+				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+				error_log( '[WPTS] Engine error: ' . $e->getMessage() );
 			}
 		}
 
@@ -97,6 +98,7 @@ class CacheManager {
 				}
 			} catch ( \Throwable $e ) {
 				if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+					// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 					error_log( '[WPTS] Core fallback error: ' . $e->getMessage() );
 				}
 			}
@@ -144,7 +146,8 @@ class CacheManager {
 					$this->last_fallback        = true;
 					$this->last_fallback_engine = 'mysql';
 					$this->last_error           = sprintf(
-						__( 'Indexed to MySQL fallback (%s error: %s).', 'turbo-search' ),
+						/* translators: 1: Search engine driver name, 2: Error message */
+						__( 'Indexed to MySQL fallback (%1$s error: %2$s).', 'turbo-search' ),
 						strtoupper( $primary_driver ),
 						$primary_err
 					);
@@ -152,7 +155,8 @@ class CacheManager {
 				} else {
 					$mysql_err = $mysql_engine->get_last_error() ?: __( 'MySQL index table write failed.', 'turbo-search' );
 					$this->last_error = sprintf(
-						__( '%s error: %s | MySQL fallback error: %s', 'turbo-search' ),
+						/* translators: 1: Search engine driver name, 2: Primary error message, 3: MySQL error message */
+						__( '%1$s error: %2$s | MySQL fallback error: %3$s', 'turbo-search' ),
 						strtoupper( $primary_driver ),
 						$primary_err,
 						$mysql_err
@@ -160,7 +164,8 @@ class CacheManager {
 				}
 			} catch ( \Throwable $e ) {
 				$this->last_error = sprintf(
-					__( '%s error: %s | MySQL fallback exception: %s', 'turbo-search' ),
+					/* translators: 1: Search engine driver name, 2: Primary error message, 3: Exception message */
+					__( '%1$s error: %2$s | MySQL fallback exception: %3$s', 'turbo-search' ),
 					strtoupper( $primary_driver ),
 					$primary_err,
 					$e->getMessage()
@@ -208,7 +213,8 @@ class CacheManager {
 					$this->last_fallback        = true;
 					$this->last_fallback_engine = 'mysql';
 					$this->last_error           = sprintf(
-						__( 'Indexed to MySQL fallback (%s error: %s).', 'turbo-search' ),
+						/* translators: 1: Search engine driver name, 2: Error message */
+						__( 'Indexed to MySQL fallback (%1$s error: %2$s).', 'turbo-search' ),
 						strtoupper( $primary_driver ),
 						$primary_err
 					);
@@ -321,16 +327,22 @@ class CacheManager {
 				break;
 
 			case self::DRIVER_WP_CACHE:
-				wp_cache_flush_group( self::CACHE_GROUP );
+				if ( function_exists( 'wp_cache_flush_group' ) ) {
+					wp_cache_flush_group( self::CACHE_GROUP );
+				} elseif ( function_exists( 'wp_cache_flush' ) ) {
+					wp_cache_flush();
+				}
 				break;
 
 			case self::DRIVER_TRANSIENT:
 			default:
 				global $wpdb;
 				$prefix = $wpdb->esc_like( '_transient_wpts_' ) . '%';
-				$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s", $prefix ) ); // phpcs:ignore
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery
+				$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s", $prefix ) );
 				$prefix_to = $wpdb->esc_like( '_transient_timeout_wpts_' ) . '%';
-				$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s", $prefix_to ) ); // phpcs:ignore
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery
+				$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s", $prefix_to ) );
 				break;
 		}
 

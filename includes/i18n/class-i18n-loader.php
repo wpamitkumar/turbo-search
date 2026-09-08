@@ -9,6 +9,7 @@ defined( 'ABSPATH' ) || exit;
 class Loader {
 
 	public function load(): void {
+		// phpcs:ignore PluginCheck.CodeAnalysis.DiscouragedFunctions.load_plugin_textdomainFound
 		load_plugin_textdomain(
 			'turbo-search',
 			false,
@@ -27,6 +28,7 @@ class Loader {
 
 		icl_register_string( 'turbo-search', 'search_placeholder', __( 'Search…', 'turbo-search' ) );
 		icl_register_string( 'turbo-search', 'no_results',         __( 'No results found.', 'turbo-search' ) );
+		/* translators: %d: results count */
 		icl_register_string( 'turbo-search', 'results_count',      __( '%d results', 'turbo-search' ) );
 
 		/**

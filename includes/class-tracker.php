@@ -40,6 +40,7 @@ class Tracker {
 		$events = $wpdb->prefix . self::TABLE_SUFFIX;
 		$search = $wpdb->prefix . self::TABLE_SUFFIX_SEARCH;
 
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 		$wpdb->query( "
 			CREATE TABLE IF NOT EXISTS `{$events}` (
 			  `id`          BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -58,7 +59,7 @@ class Tracker {
 			  KEY `post_id` (`post_id`),
 			  KEY `site_id` (`site_id`)
 			) ENGINE=InnoDB {$charset}
-		" ); // phpcs:ignore
+		" );
 
 		$wpdb->query( "
 			CREATE TABLE IF NOT EXISTS `{$search}` (
@@ -82,9 +83,11 @@ class Tracker {
 			  KEY `searched_at` (`searched_at`),
 			  KEY `site_id`     (`site_id`),
 			  KEY `from_cache`  (`from_cache`),
-			  KEY `variant`     (`variant`)
+			  KEY `variant`     (`variant`),
+			  KEY `user_id`     (`user_id`)
 			) ENGINE=InnoDB {$charset}
-		" ); // phpcs:ignore
+		" );
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 	}
 
 	public function record_search(
@@ -104,6 +107,7 @@ class Tracker {
 		$variant = class_exists( '\WPTS\Analytics\ABTesting' ) ? ABTesting::get_current_variant() : 'A';
 		$user_id = get_current_user_id();
 
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery
 		$wpdb->insert(
 			$this->search_table,
 			[
@@ -146,8 +150,9 @@ class Tracker {
 		global $wpdb;
 		$query_hash = md5( strtolower( trim( $query ) ) );
 
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 		// Update the most recent matching search row
-		$recent_id = (int) $wpdb->get_var( $wpdb->prepare( // phpcs:ignore
+		$recent_id = (int) $wpdb->get_var( $wpdb->prepare(
 			"SELECT id FROM {$this->search_table}
 			 WHERE query_hash = %s AND site_id = %d AND (clicked_position IS NULL OR clicked_position = 0)
 			 ORDER BY searched_at DESC LIMIT 1",
@@ -155,7 +160,7 @@ class Tracker {
 		) );
 
 		if ( $recent_id <= 0 ) {
-			$recent_id = (int) $wpdb->get_var( $wpdb->prepare( // phpcs:ignore
+			$recent_id = (int) $wpdb->get_var( $wpdb->prepare(
 				"SELECT id FROM {$this->search_table}
 				 WHERE query_hash = %s AND site_id = %d
 				 ORDER BY searched_at DESC LIMIT 1",
@@ -187,6 +192,7 @@ class Tracker {
 				[ '%d' ]
 			);
 		}
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 
 		$this->record_event( 'result_click', '', '', $post_id, $post_type, '', [ 'query' => $query, 'position' => $position ] );
 		do_action( 'wpts_click_tracked', $query, $post_id, $position );
@@ -206,6 +212,7 @@ class Tracker {
 		if ( ! $this->ensure_tracker_tables() ) return;
 
 		global $wpdb;
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery
 		$wpdb->insert(
 			$this->events_table,
 			[
@@ -226,11 +233,13 @@ class Tracker {
 	private function ensure_tracker_tables(): bool {
 		if ( $this->tables_checked ) return true;
 		global $wpdb;
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 		$exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $this->search_table ) );
 		if ( ! $exists ) {
 			self::create_tables();
 			$exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $this->search_table ) );
 		}
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 		$this->tables_checked = (bool) $exists;
 		return $this->tables_checked;
 	}
@@ -238,7 +247,8 @@ class Tracker {
 	public function top_queries( int $limit = 20, int $days = 30 ): array {
 		global $wpdb;
 		$since = gmdate( 'Y-m-d H:i:s', strtotime( "-{$days} days" ) );
-		return (array) $wpdb->get_results( $wpdb->prepare( // phpcs:ignore
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
+		$results = (array) $wpdb->get_results( $wpdb->prepare(
 			"SELECT query, COUNT(*) as search_count,
 					AVG(results) as avg_results,
 					SUM(from_cache) as cache_hits,
@@ -250,12 +260,15 @@ class Tracker {
 			 LIMIT %d",
 			$since, get_current_blog_id(), $limit
 		), ARRAY_A );
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
+		return $results;
 	}
 
 	public function zero_result_queries( int $limit = 20, int $days = 30 ): array {
 		global $wpdb;
 		$since = gmdate( 'Y-m-d H:i:s', strtotime( "-{$days} days" ) );
-		return (array) $wpdb->get_results( $wpdb->prepare( // phpcs:ignore
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
+		$results = (array) $wpdb->get_results( $wpdb->prepare(
 			"SELECT query, COUNT(*) as search_count, MAX(searched_at) as last_searched
 			 FROM {$this->search_table}
 			 WHERE searched_at >= %s AND results = 0 AND site_id = %d
@@ -264,12 +277,15 @@ class Tracker {
 			 LIMIT %d",
 			$since, get_current_blog_id(), $limit
 		), ARRAY_A );
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
+		return $results;
 	}
 
 	public function daily_volume( int $days = 14 ): array {
 		global $wpdb;
 		$since = gmdate( 'Y-m-d H:i:s', strtotime( "-{$days} days" ) );
-		return (array) $wpdb->get_results( $wpdb->prepare( // phpcs:ignore
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
+		$results = (array) $wpdb->get_results( $wpdb->prepare(
 			"SELECT DATE(searched_at) as day,
 					COUNT(*) as total,
 					SUM(from_cache) as cached,
@@ -281,11 +297,14 @@ class Tracker {
 			 ORDER BY day ASC",
 			$since, get_current_blog_id()
 		), ARRAY_A );
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
+		return $results;
 	}
 
 	public function recent_index_events( int $limit = 30 ): array {
 		global $wpdb;
-		return (array) $wpdb->get_results( $wpdb->prepare( // phpcs:ignore
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
+		$results = (array) $wpdb->get_results( $wpdb->prepare(
 			"SELECT e.*, p.post_title
 			 FROM {$this->events_table} e
 			 LEFT JOIN {$wpdb->posts} p ON p.ID = e.post_id
@@ -294,11 +313,14 @@ class Tracker {
 			 LIMIT %d",
 			get_current_blog_id(), $limit
 		), ARRAY_A );
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
+		return $results;
 	}
 
 	public function indexed_by_type(): array {
 		global $wpdb;
-		return (array) $wpdb->get_results( $wpdb->prepare( // phpcs:ignore
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
+		$results = (array) $wpdb->get_results( $wpdb->prepare(
 			"SELECT post_type, COUNT(*) as cnt
 			 FROM {$wpdb->prefix}wpts_index
 			 WHERE site_id = %d
@@ -306,19 +328,25 @@ class Tracker {
 			 ORDER BY cnt DESC",
 			get_current_blog_id()
 		), ARRAY_A );
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
+		return $results;
 	}
 
 	public function prune( int $days = 90 ): void {
 		global $wpdb;
 		$before = gmdate( 'Y-m-d H:i:s', strtotime( "-{$days} days" ) );
-		$wpdb->query( $wpdb->prepare( "DELETE FROM {$this->search_table} WHERE searched_at < %s", $before ) ); // phpcs:ignore
-		$wpdb->query( $wpdb->prepare( "DELETE FROM {$this->events_table} WHERE happened_at < %s", $before ) );  // phpcs:ignore
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
+		$wpdb->query( $wpdb->prepare( "DELETE FROM {$this->search_table} WHERE searched_at < %s", $before ) );
+		$wpdb->query( $wpdb->prepare( "DELETE FROM {$this->events_table} WHERE happened_at < %s", $before ) );
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 	}
 
 	public function reset_counters(): void {
 		global $wpdb;
-		$wpdb->query( "TRUNCATE TABLE `{$this->search_table}`" ); // phpcs:ignore
-		$wpdb->query( "TRUNCATE TABLE `{$this->events_table}`" ); // phpcs:ignore
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
+		$wpdb->query( "TRUNCATE TABLE `{$this->search_table}`" );
+		$wpdb->query( "TRUNCATE TABLE `{$this->events_table}`" );
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 		update_option( 'wpts_tracking_reset_at', current_time( 'mysql' ), false );
 	}
 

@@ -147,7 +147,7 @@ class WPCoreFallback {
 						'url'            => $doc_url,
 						'thumbnail_url'  => $thumb_url,
 						'date'           => $timestamp,
-						'date_formatted' => function_exists( 'date_i18n' ) ? date_i18n( get_option( 'date_format' ), $timestamp ) : date( 'Y-m-d', $timestamp ),
+						'date_formatted' => function_exists( 'date_i18n' ) ? date_i18n( get_option( 'date_format' ), $timestamp ) : gmdate( 'Y-m-d', $timestamp ),
 						'sku'            => $sku,
 						'price'          => $price,
 						'stock_status'   => $stock_status,
@@ -158,6 +158,7 @@ class WPCoreFallback {
 			}
 		} catch ( \Throwable $e ) {
 			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
 				error_log( '[WPTS] WPCoreFallback query error: ' . $e->getMessage() );
 			}
 		}

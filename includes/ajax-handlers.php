@@ -76,6 +76,7 @@ function wpts_ajax_add_to_cart_handler(): void {
 		return;
 	}
 
+	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 	$passed_validation = apply_filters( 'woocommerce_add_to_cart_validation', true, $product_id, $quantity );
 	$cart_item_key     = false;
 
@@ -84,6 +85,7 @@ function wpts_ajax_add_to_cart_handler(): void {
 	}
 
 	if ( $cart_item_key ) {
+		// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 		do_action( 'woocommerce_ajax_added_to_cart', $product_id );
 
 		if ( class_exists( '\WC_AJAX' ) ) {
@@ -154,11 +156,12 @@ add_action( 'wp_ajax_wpts_live_stats', function (): void {
 	$indexed = \WPTS\Core::instance()->get_engine()->get_indexed_count();
 
 	$log_table  = $wpdb->prefix . 'wpts_search_log';
+	// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 	$log_exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $log_table ) );
 
 	$total_searches = $cache_hits = $cache_misses = $zero_result_searches = 0;
 	if ( $log_exists ) {
-		$row = $wpdb->get_row( // phpcs:ignore
+		$row = $wpdb->get_row(
 			"SELECT
 				COUNT(*)                           AS total_searches,
 				SUM( from_cache = 1 )              AS cache_hits,
@@ -183,7 +186,7 @@ add_action( 'wp_ajax_wpts_live_stats', function (): void {
 
 	$index_upserts = $index_deletes = $cache_flushes = 0;
 	if ( $evt_exists ) {
-		$evts = $wpdb->get_results( // phpcs:ignore
+		$evts = $wpdb->get_results(
 			"SELECT event_type, COUNT(*) AS cnt
 			 FROM `{$evt_table}`
 			 WHERE event_type IN ('index_upsert','index_delete','cache_flush_all')
@@ -198,6 +201,7 @@ add_action( 'wp_ajax_wpts_live_stats', function (): void {
 			}
 		}
 	}
+	// phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 
 	wp_send_json_success( [
 		'indexed_posts'        => $indexed,
@@ -288,6 +292,7 @@ add_action( 'wp_ajax_wpts_flush_cache_ajax', function (): void {
 
 	wp_send_json_success( [
 		'message' => sprintf(
+			/* translators: %s: cache driver name */
 			__( '✅ Cache flushed (driver: %s).', 'turbo-search' ),
 			$driver
 		),
@@ -325,7 +330,11 @@ add_action( 'wp_ajax_wpts_test_redis', function (): void {
 		$info    = $redis->info( 'server' );
 		$version = $info['redis_version'] ?? '?';
 		$redis->close();
-		wp_send_json_success( sprintf( __( 'Connected! Redis v%s', 'turbo-search' ), $version ) );
+		wp_send_json_success( sprintf(
+			/* translators: %s: Redis server version */
+			__( 'Connected! Redis v%s', 'turbo-search' ),
+			$version
+		) );
 	} catch ( \Exception $e ) {
 		wp_send_json_error( $e->getMessage() );
 	}
@@ -358,7 +367,11 @@ add_action( 'wp_ajax_wpts_test_memcached', function (): void {
 		}
 		$stats   = $mc->getStats();
 		$version = $stats["{$host}:{$port}"]['version'] ?? '?';
-		wp_send_json_success( sprintf( __( 'Connected! Memcached v%s', 'turbo-search' ), $version ) );
+		wp_send_json_success( sprintf(
+			/* translators: %s: Memcached server version */
+			__( 'Connected! Memcached v%s', 'turbo-search' ),
+			$version
+		) );
 	} catch ( \Exception $e ) {
 		wp_send_json_error( $e->getMessage() );
 	}

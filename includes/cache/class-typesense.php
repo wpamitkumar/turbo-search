@@ -28,7 +28,7 @@ class Typesense implements EngineInterface {
 		$port     = $settings['typesense_port']     ?? '8108';
 
 		if ( preg_match( '#^https?://#i', $raw_host ) ) {
-			$parsed = parse_url( $raw_host );
+			$parsed = wp_parse_url( $raw_host );
 			$proto  = $parsed['scheme'] ?? $proto;
 			$host   = $parsed['host'] ?? $raw_host;
 			if ( ! empty( $parsed['port'] ) ) {

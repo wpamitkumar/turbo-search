@@ -106,14 +106,15 @@ class Spelling {
 			return [];
 		}
 		$table  = $wpdb->prefix . 'wpts_index';
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 		$exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) );
-
 		if ( ! $exists ) {
 			return [];
 		}
 
 		// Fetch recent post titles and excerpts to build initial vocabulary
-		$rows = $wpdb->get_results( "SELECT title, excerpt FROM `{$table}` LIMIT 1000", ARRAY_A ); // phpcs:ignore
+		$rows = $wpdb->get_results( "SELECT title, excerpt FROM `{$table}` LIMIT 1000", ARRAY_A );
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 		$map  = [];
 
 		foreach ( (array) $rows as $row ) {
@@ -128,8 +129,10 @@ class Spelling {
 
 		// Also add popular search terms from log
 		$log_table = $wpdb->prefix . 'wpts_search_log';
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 		if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $log_table ) ) ) {
-			$search_rows = $wpdb->get_results( "SELECT query FROM `{$log_table}` WHERE results > 0 LIMIT 500", ARRAY_A ); // phpcs:ignore
+			$search_rows = $wpdb->get_results( "SELECT query FROM `{$log_table}` WHERE results > 0 LIMIT 500", ARRAY_A );
+			// phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 			foreach ( (array) $search_rows as $sr ) {
 				$words = Utils::tokenize( $sr['query'] ?? '' );
 				foreach ( $words as $w ) {

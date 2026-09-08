@@ -43,6 +43,7 @@ class MySQL implements EngineInterface {
 		}
 
 		// Ensure index table exists
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery
 		$exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $this->table ) );
 		if ( ! $exists ) {
 			if ( class_exists( '\WPTS\Installer' ) ) {
@@ -170,29 +171,27 @@ class MySQL implements EngineInterface {
 
 		$all_query_params = array_merge( $score_vals, $where_vals, [ $per_page, $offset ] );
 
-		$fetch_sql = $wpdb->prepare(
-			"SELECT post_id, post_type, title, excerpt, content, meta_json,
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
+		$fetch_query = "SELECT post_id, post_type, title, excerpt, content, meta_json,
 					({$score_clause}) AS _score
 			 FROM `{$this->table}`
 			 WHERE {$where_sql}
 			 ORDER BY _score DESC, indexed_at DESC
-			 LIMIT %d OFFSET %d",
-			...$all_query_params
-		);
+			 LIMIT %d OFFSET %d";
+		$fetch_sql   = $wpdb->prepare( $fetch_query, ...$all_query_params );
 
-		$rows = (array) $wpdb->get_results( $fetch_sql, ARRAY_A ); // phpcs:ignore
+		$rows      = (array) $wpdb->get_results( $fetch_sql, ARRAY_A );
 		$row_count = count( $rows );
 
 		// If page 1 and fewer results than per_page, we know exact count without secondary query
 		if ( 1 === $page && $row_count < $per_page ) {
 			$found = $row_count;
 		} else {
-			$count_sql = $wpdb->prepare(
-				"SELECT COUNT(*) FROM `{$this->table}` WHERE {$where_sql}", // phpcs:ignore
-				...$where_vals
-			);
-			$found = (int) $wpdb->get_var( $count_sql ); // phpcs:ignore
+			$count_query = "SELECT COUNT(*) FROM `{$this->table}` WHERE {$where_sql}";
+			$count_sql   = $wpdb->prepare( $count_query, ...$where_vals );
+			$found       = (int) $wpdb->get_var( $count_sql );
 		}
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
 
 		if ( 0 === $found ) {
 			$direct_res = $this->search_direct_posts( $raw_query, $filters, $per_page, $page );
@@ -305,7 +304,11 @@ class MySQL implements EngineInterface {
 		if ( '' === $title ) {
 			$title = (string) ( $document['slug'] ?? '' );
 			if ( '' === $title ) {
-				$title = sprintf( __( 'Post #%d', 'turbo-search' ), $post_id );
+				$title = sprintf(
+					/* translators: %d: Post ID */
+					__( 'Post #%d', 'turbo-search' ),
+					$post_id
+				);
 			}
 		}
 
@@ -321,6 +324,7 @@ class MySQL implements EngineInterface {
 			'indexed_at' => current_time( 'mysql' ),
 		];
 
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery
 		$result  = $wpdb->replace(
 			$this->table,
 			$data,
@@ -330,6 +334,7 @@ class MySQL implements EngineInterface {
 
 		if ( ! $success ) {
 			\WPTS\Installer::ensure_tables();
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery
 			$result  = $wpdb->replace(
 				$this->table,
 				$data,
@@ -347,6 +352,7 @@ class MySQL implements EngineInterface {
 
 	public function delete( int $post_id ): bool {
 		global $wpdb;
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery
 		return false !== $wpdb->delete(
 			$this->table,
 			[ 'post_id' => $post_id, 'site_id' => get_current_blog_id() ],
@@ -412,7 +418,11 @@ class MySQL implements EngineInterface {
 			if ( '' === $title ) {
 				$title = (string) ( $document['slug'] ?? '' );
 				if ( '' === $title ) {
-					$title = sprintf( __( 'Post #%d', 'turbo-search' ), $doc_id );
+					$title = sprintf(
+						/* translators: %d: Post ID */
+						__( 'Post #%d', 'turbo-search' ),
+						$doc_id
+					);
 				}
 			}
 
@@ -432,19 +442,21 @@ class MySQL implements EngineInterface {
 			return true;
 		}
 
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 		$sql = "REPLACE INTO `{$this->table}` (`post_id`, `post_type`, `lang`, `site_id`, `title`, `content`, `excerpt`, `meta_json`, `indexed_at`) VALUES " . implode( ', ', $placeholders );
 		$prepared = $wpdb->prepare( $sql, ...$values );
-		$res      = $wpdb->query( $prepared ); // phpcs:ignore
+		$res      = $wpdb->query( $prepared );
 		$success  = false !== $res;
 
 		if ( ! $success ) {
 			\WPTS\Installer::ensure_tables();
-			$res     = $wpdb->query( $prepared ); // phpcs:ignore
+			$res     = $wpdb->query( $prepared );
 			$success = false !== $res;
 			if ( ! $success ) {
 				$this->last_error = $wpdb->last_error ?: __( 'MySQL bulk replace query failed.', 'turbo-search' );
 			}
 		}
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 
 		do_action( 'wpts_after_index_bulk', $documents, $success, 'mysql' );
 		return $success;
@@ -529,20 +541,25 @@ class MySQL implements EngineInterface {
 
 	public function get_indexed_count(): int {
 		global $wpdb;
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 		$exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $this->table ) );
 		if ( ! $exists ) {
 			return 0;
 		}
-		return (int) $wpdb->get_var( "SELECT COUNT(*) FROM `{$this->table}`" ); // phpcs:ignore
+		$count = (int) $wpdb->get_var( "SELECT COUNT(*) FROM `{$this->table}`" );
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
+		return $count;
 	}
 
 	public function flush_index(): bool {
 		global $wpdb;
 		\WPTS\Installer::ensure_tables();
-		$res = $wpdb->query( "TRUNCATE TABLE `{$this->table}`" ); // phpcs:ignore
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
+		$res = $wpdb->query( "TRUNCATE TABLE `{$this->table}`" );
 		if ( false === $res ) {
-			$res = $wpdb->query( $wpdb->prepare( "DELETE FROM `{$this->table}` WHERE site_id = %d", get_current_blog_id() ) ); // phpcs:ignore
+			$res = $wpdb->query( $wpdb->prepare( "DELETE FROM `{$this->table}` WHERE site_id = %d", get_current_blog_id() ) );
 		}
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 		Spelling::flush_vocabulary();
 		do_action( 'wpts_index_flushed', 'mysql' );
 		return false !== $res;
@@ -554,10 +571,12 @@ class MySQL implements EngineInterface {
 		if ( null !== $has_ft ) {
 			return $has_ft;
 		}
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 		$rows = $wpdb->get_results(
-			$wpdb->prepare( "SHOW INDEX FROM `{$this->table}` WHERE Index_type = 'FULLTEXT'" ), // phpcs:ignore
+			$wpdb->prepare( "SHOW INDEX FROM `{$this->table}` WHERE Index_type = 'FULLTEXT'" ),
 			ARRAY_A
 		);
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 		$has_ft = ! empty( $rows );
 		return $has_ft;
 	}
@@ -609,11 +628,11 @@ class MySQL implements EngineInterface {
 
 		$where_sql = implode( ' AND ', $where_conditions );
 
-		$count_sql = $wpdb->prepare(
-			"SELECT COUNT(*) FROM `{$wpdb->posts}` WHERE {$where_sql}", // phpcs:ignore
-			...$where_vals
-		);
-		$found = (int) $wpdb->get_var( $count_sql ); // phpcs:ignore
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
+		$count_query = "SELECT COUNT(*) FROM `{$wpdb->posts}` WHERE {$where_sql}";
+		$count_sql   = $wpdb->prepare( $count_query, ...$where_vals );
+		$found       = (int) $wpdb->get_var( $count_sql );
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
 
 		if ( 0 === $found ) {
 			return [
@@ -628,16 +647,16 @@ class MySQL implements EngineInterface {
 		$score_vals = [ $like, $like ];
 		$all_params = array_merge( $score_vals, $where_vals, [ $per_page, $offset ] );
 
-		$fetch_sql = $wpdb->prepare(
-			"SELECT ID, post_title, post_excerpt, post_content, post_type, post_date
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
+		$fetch_query = "SELECT ID, post_title, post_excerpt, post_content, post_type, post_date
 			 FROM `{$wpdb->posts}`
 			 WHERE {$where_sql}
 			 ORDER BY (CASE WHEN post_title LIKE %s THEN 100 WHEN post_title LIKE %s THEN 50 ELSE 10 END) DESC, post_date DESC
-			 LIMIT %d OFFSET %d",
-			...$all_params
-		);
+			 LIMIT %d OFFSET %d";
+		$fetch_sql   = $wpdb->prepare( $fetch_query, ...$all_params );
 
-		$posts = $wpdb->get_results( $fetch_sql, ARRAY_A ); // phpcs:ignore
+		$posts = $wpdb->get_results( $fetch_sql, ARRAY_A );
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, WordPress.DB.PreparedSQLPlaceholders, PluginCheck.Security.DirectDB
 		$hits  = [];
 		$pids  = [];
 

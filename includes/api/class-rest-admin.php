@@ -396,7 +396,8 @@ class RestAdmin {
 					if ( ! empty( $res['ok'] ) ) {
 						return new \WP_REST_Response( [
 							'success' => true,
-							'message' => sprintf( __( 'Connected! Collection: %s (%d docs)', 'turbo-search' ), $res['collection'], $res['num_documents'] ),
+							/* translators: 1: collection name, 2: document count */
+							'message' => sprintf( __( 'Connected! Collection: %1$s (%2$d docs)', 'turbo-search' ), $res['collection'], $res['num_documents'] ),
 						], 200 );
 					}
 					return new \WP_REST_Response( [
@@ -427,7 +428,8 @@ class RestAdmin {
 					if ( ! empty( $res['ok'] ) ) {
 						return new \WP_REST_Response( [
 							'success' => true,
-							'message' => sprintf( __( 'Connected! Cluster: %s (v%s, status: %s)', 'turbo-search' ), $res['cluster_name'], $res['version'], $res['status'] ),
+							/* translators: 1: cluster name, 2: Elasticsearch version, 3: cluster health status */
+							'message' => sprintf( __( 'Connected! Cluster: %1$s (v%2$s, status: %3$s)', 'turbo-search' ), $res['cluster_name'], $res['version'], $res['status'] ),
 						], 200 );
 					}
 					return new \WP_REST_Response( [
@@ -447,17 +449,19 @@ class RestAdmin {
 				if ( ! extension_loaded( 'redis' ) ) {
 					$errno  = 0;
 					$errstr = '';
-					$fp = @fsockopen( $host, $port, $errno, $errstr, 2.0 ); // phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged, WordPressVIPMinimum.Functions.RestrictedFunctions.custom_fsockopen
+					$fp = @fsockopen( $host, $port, $errno, $errstr, 2.0 ); // phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged, WordPressVIPMinimum.Functions.RestrictedFunctions.custom_fsockopen, WordPress.WP.AlternativeFunctions.file_system_operations_fsockopen
 					if ( is_resource( $fp ) ) {
-						fclose( $fp );
+						fclose( $fp ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
 						return new \WP_REST_Response( [
 							'success' => true,
-							'message' => sprintf( __( 'Redis service is reachable at %s:%d (Note: Install PHP ext-redis for native caching)', 'turbo-search' ), $host, $port ),
+							/* translators: 1: Redis host, 2: Redis port */
+							'message' => sprintf( __( 'Redis service is reachable at %1$s:%2$d (Note: Install PHP ext-redis for native caching)', 'turbo-search' ), $host, $port ),
 						], 200 );
 					}
 					return new \WP_REST_Response( [
 						'success' => false,
-						'message' => sprintf( __( 'PHP ext-redis is not loaded and Redis at %s:%d is unreachable (%s)', 'turbo-search' ), $host, $port, $errstr ?: 'Connection refused' ),
+						/* translators: 1: Redis host, 2: Redis port, 3: error message */
+						'message' => sprintf( __( 'PHP ext-redis is not loaded and Redis at %1$s:%2$d is unreachable (%3$s)', 'turbo-search' ), $host, $port, $errstr ?: 'Connection refused' ),
 					], 200 );
 				}
 
@@ -467,7 +471,8 @@ class RestAdmin {
 					if ( ! $connected ) {
 						return new \WP_REST_Response( [
 							'success' => false,
-							'message' => sprintf( __( 'Could not connect to Redis at %s:%d. Please check if the Redis service is running.', 'turbo-search' ), $host, $port ),
+							/* translators: 1: Redis host, 2: Redis port */
+							'message' => sprintf( __( 'Could not connect to Redis at %1$s:%2$d. Please check if the Redis service is running.', 'turbo-search' ), $host, $port ),
 						], 200 );
 					}
 					if ( ! empty( $pass ) ) {
@@ -489,11 +494,13 @@ class RestAdmin {
 
 					return new \WP_REST_Response( [
 						'success' => true,
-						'message' => sprintf( __( 'Connected successfully! Redis v%s (DB %d)', 'turbo-search' ), $v, $db ),
+						/* translators: 1: Redis version, 2: database index */
+						'message' => sprintf( __( 'Connected successfully! Redis v%1$s (DB %2$d)', 'turbo-search' ), $v, $db ),
 					], 200 );
 				} catch ( \Throwable $e ) {
 					return new \WP_REST_Response( [
 						'success' => false,
+						/* translators: %s: error message */
 						'message' => sprintf( __( 'Redis Error: %s', 'turbo-search' ), $e->getMessage() ),
 					], 200 );
 				}
@@ -505,19 +512,21 @@ class RestAdmin {
 				if ( ! extension_loaded( 'memcached' ) ) {
 					$errno  = 0;
 					$errstr = '';
-					$fp = @fsockopen( $host, $port, $errno, $errstr, 2.0 ); // phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged, WordPressVIPMinimum.Functions.RestrictedFunctions.custom_fsockopen
+					$fp = @fsockopen( $host, $port, $errno, $errstr, 2.0 ); // phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged, WordPressVIPMinimum.Functions.RestrictedFunctions.custom_fsockopen, WordPress.WP.AlternativeFunctions.file_system_operations_fsockopen
 					if ( is_resource( $fp ) ) {
-						fwrite( $fp, "version\r\n" );
+						fwrite( $fp, "version\r\n" ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fwrite
 						$resp = trim( (string) fgets( $fp, 128 ) );
-						fclose( $fp );
+						fclose( $fp ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
 						return new \WP_REST_Response( [
 							'success' => true,
-							'message' => sprintf( __( 'Memcached is reachable at %s:%d (%s). (Note: Install PHP ext-memcached for native caching)', 'turbo-search' ), $host, $port, $resp ?: 'Active' ),
+							/* translators: 1: Memcached host, 2: Memcached port, 3: response or status string */
+							'message' => sprintf( __( 'Memcached is reachable at %1$s:%2$d (%3$s). (Note: Install PHP ext-memcached for native caching)', 'turbo-search' ), $host, $port, $resp ?: 'Active' ),
 						], 200 );
 					}
 					return new \WP_REST_Response( [
 						'success' => false,
-						'message' => sprintf( __( 'PHP ext-memcached is not loaded and Memcached at %s:%d is unreachable (%s)', 'turbo-search' ), $host, $port, $errstr ?: 'Connection refused' ),
+						/* translators: 1: Memcached host, 2: Memcached port, 3: error message */
+						'message' => sprintf( __( 'PHP ext-memcached is not loaded and Memcached at %1$s:%2$d is unreachable (%3$s)', 'turbo-search' ), $host, $port, $errstr ?: 'Connection refused' ),
 					], 200 );
 				}
 
@@ -536,14 +545,15 @@ class RestAdmin {
 					if ( false === $server_stat || ( is_array( $server_stat ) && ( $server_stat['pid'] ?? -1 ) <= 0 && empty( $server_stat['version'] ) ) ) {
 						$errno = 0;
 						$errstr = '';
-						$fp = @fsockopen( $host, $port, $errno, $errstr, 2.0 ); // phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged, WordPressVIPMinimum.Functions.RestrictedFunctions.custom_fsockopen
+						$fp = @fsockopen( $host, $port, $errno, $errstr, 2.0 ); // phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged, WordPressVIPMinimum.Functions.RestrictedFunctions.custom_fsockopen, WordPress.WP.AlternativeFunctions.file_system_operations_fsockopen
 						if ( ! is_resource( $fp ) ) {
 							return new \WP_REST_Response( [
 								'success' => false,
-								'message' => sprintf( __( 'Could not connect to Memcached at %s:%d (%s)', 'turbo-search' ), $host, $port, $errstr ?: 'Connection refused' ),
+								/* translators: 1: Memcached host, 2: Memcached port, 3: error message */
+								'message' => sprintf( __( 'Could not connect to Memcached at %1$s:%2$d (%3$s)', 'turbo-search' ), $host, $port, $errstr ?: 'Connection refused' ),
 							], 200 );
 						}
-						fclose( $fp );
+						fclose( $fp ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
 					}
 
 					$test_key = 'wpts_test_' . uniqid();
@@ -554,11 +564,13 @@ class RestAdmin {
 					$v = ( is_array( $server_stat ) && ! empty( $server_stat['version'] ) ) ? $server_stat['version'] : 'OK';
 					return new \WP_REST_Response( [
 						'success' => true,
+						/* translators: %s: Memcached version */
 						'message' => sprintf( __( 'Connected successfully! Memcached v%s', 'turbo-search' ), $v ),
 					], 200 );
 				} catch ( \Throwable $e ) {
 					return new \WP_REST_Response( [
 						'success' => false,
+						/* translators: %s: error message */
 						'message' => sprintf( __( 'Memcached Error: %s', 'turbo-search' ), $e->getMessage() ),
 					], 200 );
 				}
@@ -591,6 +603,7 @@ class RestAdmin {
 		if ( ! ( $post instanceof \WP_Post ) ) {
 			return new \WP_REST_Response( [
 				'success' => false,
+				/* translators: %d: post ID */
 				'message' => sprintf( __( 'Post or Document #%d was not found in the database.', 'turbo-search' ), $post_id ),
 			], 404 );
 		}
@@ -603,7 +616,8 @@ class RestAdmin {
 		if ( ! $document ) {
 			return new \WP_REST_Response( [
 				'success' => false,
-				'message' => sprintf( __( 'Item #%d (status: %s) is not eligible for indexing. Must be published or inherited.', 'turbo-search' ), $post_id, $post->post_status ),
+				/* translators: 1: post ID, 2: post status */
+				'message' => sprintf( __( 'Item #%1$d (status: %2$s) is not eligible for indexing. Must be published or inherited.', 'turbo-search' ), $post_id, $post->post_status ),
 			], 400 );
 		}
 
@@ -615,7 +629,8 @@ class RestAdmin {
 
 			if ( $is_fallback ) {
 				$message = sprintf(
-					__( 'Item #%d ("%s") successfully indexed into %s index fallback. %s', 'turbo-search' ),
+					/* translators: 1: post ID, 2: post title, 3: fallback engine name, 4: error message */
+					__( 'Item #%1$d ("%2$s") successfully indexed into %3$s index fallback. %4$s', 'turbo-search' ),
 					$post_id,
 					esc_html( $post->post_title ?: 'Untitled' ),
 					strtoupper( (string) $engine->get_fallback_engine() ),
@@ -623,7 +638,8 @@ class RestAdmin {
 				);
 			} else {
 				$message = sprintf(
-					__( 'Item #%d ("%s") successfully indexed into %s search engine!', 'turbo-search' ),
+					/* translators: 1: post ID, 2: post title, 3: search engine driver name */
+					__( 'Item #%1$d ("%2$s") successfully indexed into %3$s search engine!', 'turbo-search' ),
 					$post_id,
 					esc_html( $post->post_title ?: 'Untitled' ),
 					strtoupper( $engine->get_engine_driver() )
@@ -646,8 +662,17 @@ class RestAdmin {
 
 		$err_detail = method_exists( $engine, 'get_last_error' ) ? $engine->get_last_error() : null;
 		$fail_msg   = $err_detail
-			? sprintf( __( 'Failed to write Post #%d to search engine index: %s', 'turbo-search' ), $post_id, $err_detail )
-			: sprintf( __( 'Failed to write Post #%d to search engine index.', 'turbo-search' ), $post_id );
+			? sprintf(
+				/* translators: 1: post ID, 2: error detail */
+				__( 'Failed to write Post #%1$d to search engine index: %2$s', 'turbo-search' ),
+				$post_id,
+				$err_detail
+			)
+			: sprintf(
+				/* translators: %d: post ID */
+				__( 'Failed to write Post #%d to search engine index.', 'turbo-search' ),
+				$post_id
+			);
 
 		return new \WP_REST_Response( [
 			'success' => false,
@@ -663,7 +688,11 @@ class RestAdmin {
 
 		return new \WP_REST_Response( [
 			'success' => true,
-			'message' => sprintf( __( 'Search cache flushed successfully (cache driver: %s).', 'turbo-search' ), strtoupper( $driver ) ),
+			'message' => sprintf(
+				/* translators: %s: cache driver name */
+				__( 'Search cache flushed successfully (cache driver: %s).', 'turbo-search' ),
+				strtoupper( $driver )
+			),
 		], 200 );
 	}
 
@@ -674,7 +703,11 @@ class RestAdmin {
 
 		return new \WP_REST_Response( [
 			'success'       => $ok,
-			'message'       => sprintf( __( 'Search index & queries for engine "%s" wiped and flushed successfully.', 'turbo-search' ), strtoupper( $driver ) ),
+			'message'       => sprintf(
+				/* translators: %s: search engine driver name */
+				__( 'Search index & queries for engine "%s" wiped and flushed successfully.', 'turbo-search' ),
+				strtoupper( $driver )
+			),
 			'indexed_count' => $engine->get_indexed_count(),
 		], 200 );
 	}
@@ -685,7 +718,11 @@ class RestAdmin {
 
 		if ( null !== $days && $days > 0 ) {
 			$tracker->prune( absint( $days ) );
-			$msg = sprintf( __( 'Pruned search logs older than %d days.', 'turbo-search' ), absint( $days ) );
+			$msg = sprintf(
+				/* translators: %d: number of days */
+				__( 'Pruned search logs older than %d days.', 'turbo-search' ),
+				absint( $days )
+			);
 		} else {
 			$tracker->reset_counters();
 			$msg = __( 'All search tracking logs, click data, and analytics events have been purged successfully.', 'turbo-search' );
@@ -730,15 +767,17 @@ class RestAdmin {
 		$search_log_items = [];
 		$total_logs       = 0;
 
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 		if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $search_table ) ) ) {
-			$total_logs = (int) $wpdb->get_var( "SELECT COUNT(*) FROM `{$search_table}`" ); // phpcs:ignore
-			$search_log_items = (array) $wpdb->get_results( $wpdb->prepare( // phpcs:ignore
+			$total_logs = (int) $wpdb->get_var( "SELECT COUNT(*) FROM `{$search_table}`" );
+			$search_log_items = (array) $wpdb->get_results( $wpdb->prepare(
 				"SELECT id, query, results, from_cache, engine, cache_driver, post_type, duration_ms, clicked_position, variant, searched_at
 				 FROM `{$search_table}`
 				 ORDER BY searched_at DESC
 				 LIMIT %d", 25
 			), ARRAY_A );
 		}
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 
 		$ctr_keywords = AnalyticsReport::get_keyword_click_breakdown( 30, $days );
 
@@ -772,6 +811,7 @@ class RestAdmin {
 		global $wpdb;
 		$search_table = $wpdb->prefix . 'wpts_search_log';
 
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery
 		if ( ! $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $search_table ) ) ) {
 			return new \WP_REST_Response( [
 				'items'        => [],
@@ -816,11 +856,12 @@ class RestAdmin {
 
 		$where_sql = implode( ' AND ', $where_clauses );
 
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 		// 1. Total count
 		$count_sql = "SELECT COUNT(*) FROM `{$search_table}` WHERE {$where_sql}";
 		$total = ! empty( $params )
-			? (int) $wpdb->get_var( $wpdb->prepare( $count_sql, $params ) ) // phpcs:ignore
-			: (int) $wpdb->get_var( $count_sql ); // phpcs:ignore
+			? (int) $wpdb->get_var( $wpdb->prepare( $count_sql, $params ) )
+			: (int) $wpdb->get_var( $count_sql );
 
 		$total_pages = $total > 0 ? (int) ceil( $total / $per_page ) : 0;
 		$offset      = ( $page - 1 ) * $per_page;
@@ -833,7 +874,8 @@ class RestAdmin {
 					  LIMIT %d OFFSET %d";
 
 		$fetch_params = array_merge( $params, [ $per_page, $offset ] );
-		$items = (array) $wpdb->get_results( $wpdb->prepare( $items_sql, $fetch_params ), ARRAY_A ); // phpcs:ignore
+		$items = (array) $wpdb->get_results( $wpdb->prepare( $items_sql, $fetch_params ), ARRAY_A );
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 
 		return new \WP_REST_Response( [
 			'items'        => $items,

@@ -98,11 +98,13 @@ class Page {
 	}
 
 	public function enqueue_admin_assets( string $hook ): void {
-		$page = isset( $_GET['page'] ) ? sanitize_key( $_GET['page'] ) : '';
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$page = isset( $_GET['page'] ) ? sanitize_key( wp_unslash( $_GET['page'] ) ) : '';
 		if ( false === strpos( $hook, 'wpts' ) && 0 !== strpos( $page, 'wpts' ) ) {
 			return;
 		}
 
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		$current_page = sanitize_key( wp_unslash( $_GET['page'] ?? 'wpts-dashboard' ) );
 
 		// Styles with auto cache-busting
@@ -165,10 +167,12 @@ class Page {
 	}
 
 	private function get_current_page_tab( string $page ): string {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$tab = isset( $_GET['tab'] ) ? sanitize_key( wp_unslash( $_GET['tab'] ) ) : '';
 		switch ( $page ) {
-			case 'wpts-settings': return sanitize_key( wp_unslash( $_GET['tab'] ?? 'general' ) );
-			case 'wpts-tracking': return sanitize_key( wp_unslash( $_GET['tab'] ?? 'searches' ) );
-			case 'wpts-cache':    return sanitize_key( wp_unslash( $_GET['tab'] ?? 'general' ) );
+			case 'wpts-settings': return $tab ?: 'general';
+			case 'wpts-tracking': return $tab ?: 'searches';
+			case 'wpts-cache':    return $tab ?: 'general';
 			case 'wpts-index':    return 'indexer';
 			case 'wpts-hooks':    return 'hooks';
 			case 'wpts-docs':     return 'docs';

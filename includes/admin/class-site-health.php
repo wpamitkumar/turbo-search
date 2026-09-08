@@ -31,14 +31,19 @@ class SiteHealth {
 
 		if ( 'mysql' === $driver || ! empty( $status['connected'] ) ) {
 			return [
-				'label'       => sprintf( __( 'Search Engine (%s) is healthy', 'turbo-search' ), strtoupper( $driver ) ),
+				'label'       => sprintf(
+					/* translators: %s: Search engine driver name */
+					__( 'Search Engine (%s) is healthy', 'turbo-search' ),
+					strtoupper( $driver )
+				),
 				'status'      => 'good',
 				'badge'       => [
 					'label' => __( 'Turbo Search', 'turbo-search' ),
 					'color' => 'blue',
 				],
 				'description' => sprintf(
-					__( 'The active search engine (%s) and cache driver (%s) are connected and serving results.', 'turbo-search' ),
+					/* translators: 1: Search engine driver name, 2: Cache driver name */
+					__( 'The active search engine (%1$s) and cache driver (%2$s) are connected and serving results.', 'turbo-search' ),
 					strtoupper( $driver ),
 					strtoupper( $status['driver'] ?? 'unknown' )
 				),
@@ -48,7 +53,11 @@ class SiteHealth {
 		}
 
 		return [
-			'label'       => sprintf( __( 'Search Engine (%s) is unreachable', 'turbo-search' ), strtoupper( $driver ) ),
+			'label'       => sprintf(
+				/* translators: %s: Search engine driver name */
+				__( 'Search Engine (%s) is unreachable', 'turbo-search' ),
+				strtoupper( $driver )
+			),
 			'status'      => 'critical',
 			'badge'       => [
 				'label' => __( 'Turbo Search', 'turbo-search' ),
@@ -84,7 +93,12 @@ class SiteHealth {
 
 		if ( $total_pub === 0 || $count >= ( $total_pub * 0.9 ) ) {
 			return [
-				'label'       => sprintf( __( 'Search index is up to date (%d of %d posts)', 'turbo-search' ), $count, $total_pub ),
+				'label'       => sprintf(
+					/* translators: 1: Number of indexed posts, 2: Total number of posts */
+					__( 'Search index is up to date (%1$d of %2$d posts)', 'turbo-search' ),
+					$count,
+					$total_pub
+				),
 				'status'      => 'good',
 				'badge'       => [
 					'label' => __( 'Turbo Search', 'turbo-search' ),
@@ -97,7 +111,12 @@ class SiteHealth {
 		}
 
 		return [
-			'label'       => sprintf( __( 'Search index needs updating (%d of %d posts indexed)', 'turbo-search' ), $count, $total_pub ),
+			'label'       => sprintf(
+				/* translators: 1: Number of indexed posts, 2: Total number of posts */
+				__( 'Search index needs updating (%1$d of %2$d posts indexed)', 'turbo-search' ),
+				$count,
+				$total_pub
+			),
 			'status'      => 'recommended',
 			'badge'       => [
 				'label' => __( 'Turbo Search', 'turbo-search' ),

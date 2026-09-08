@@ -18,12 +18,13 @@ class Trending {
 		$table = $wpdb->prefix . 'wpts_search_log';
 		$since = gmdate( 'Y-m-d H:i:s', strtotime( "-{$days} days" ) );
 
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 		$exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) );
 		if ( ! $exists ) {
 			return [];
 		}
 
-		$rows = $wpdb->get_results( $wpdb->prepare( // phpcs:ignore
+		$rows = $wpdb->get_results( $wpdb->prepare(
 			"SELECT query, COUNT(*) as count
 			 FROM {$table}
 			 WHERE searched_at >= %s AND results > 0 AND site_id = %d
@@ -32,6 +33,7 @@ class Trending {
 			 LIMIT %d",
 			$since, get_current_blog_id(), $limit
 		), ARRAY_A );
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 
 		$out = [];
 		foreach ( (array) $rows as $r ) {

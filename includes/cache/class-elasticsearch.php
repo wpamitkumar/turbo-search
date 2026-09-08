@@ -31,7 +31,7 @@ class Elasticsearch implements EngineInterface {
 		$port     = $settings['elasticsearch_port']     ?? '9200';
 
 		if ( preg_match( '#^https?://#i', $raw_host ) ) {
-			$parsed = parse_url( $raw_host );
+			$parsed = wp_parse_url( $raw_host );
 			$proto  = $parsed['scheme'] ?? $proto;
 			$host   = $parsed['host'] ?? $raw_host;
 			if ( ! empty( $parsed['port'] ) ) {

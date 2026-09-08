@@ -26,8 +26,9 @@ class Facets {
 		global $wpdb;
 		$id_list = implode( ',', array_map( 'absint', $post_ids ) );
 
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 		// 1. Post Type facets
-		$post_types_rows = $wpdb->get_results( // phpcs:ignore
+		$post_types_rows = $wpdb->get_results(
 			"SELECT post_type, COUNT(*) as count
 			 FROM {$wpdb->posts}
 			 WHERE ID IN ({$id_list})
@@ -47,7 +48,7 @@ class Facets {
 		}
 
 		// 2. Taxonomy facets (Categories, Tags, Custom Taxonomies, Product Categories)
-		$tax_rows = $wpdb->get_results( // phpcs:ignore
+		$tax_rows = $wpdb->get_results(
 			"SELECT tt.taxonomy, t.term_id, t.name, t.slug, COUNT(tr.object_id) as count
 			 FROM {$wpdb->term_relationships} tr
 			 INNER JOIN {$wpdb->term_taxonomy} tt ON tr.term_taxonomy_id = tt.term_taxonomy_id
@@ -87,12 +88,13 @@ class Facets {
 		$d_30d   = $now - 30 * DAY_IN_SECONDS;
 		$d_year  = $now - 365 * DAY_IN_SECONDS;
 
-		$date_rows = $wpdb->get_results( // phpcs:ignore
+		$date_rows = $wpdb->get_results(
 			"SELECT UNIX_TIMESTAMP(post_date) as post_ts
 			 FROM {$wpdb->posts}
 			 WHERE ID IN ({$id_list})",
 			ARRAY_A
 		);
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 
 		$dates = [
 			'24h'   => [ 'label' => __( 'Last 24 hours', 'turbo-search' ), 'count' => 0 ],

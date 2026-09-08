@@ -33,8 +33,9 @@ if ( version_compare( PHP_VERSION, WPTS_MIN_PHP, '<' ) ) {
 	add_action( 'admin_notices', function () {
 		echo '<div class="notice notice-error"><p>' .
 			 sprintf(
+				 /* translators: %s: Minimum required PHP version */
 				 esc_html__( 'Turbo Search requires PHP %s or higher.', 'turbo-search' ),
-				 WPTS_MIN_PHP
+				 esc_html( WPTS_MIN_PHP )
 			 ) .
 			 '</p></div>';
 	} );
@@ -101,7 +102,9 @@ require_once WPTS_DIR . 'includes/universal/class-utils.php';
 add_action( 'init', 'wpts_register_post_handlers', 1 );
 
 function wpts_register_post_handlers(): void {
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	if ( ! isset( $_REQUEST['action'] ) ) return;
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	$action = sanitize_key( wp_unslash( $_REQUEST['action'] ?? '' ) );
 	if ( strncmp( 'wpts_', $action, 5 ) !== 0 ) return;
 
@@ -133,8 +136,10 @@ function wpts_register_post_handlers(): void {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_die( esc_html__( 'You do not have permission to do this.', 'turbo-search' ) );
 		}
-		WPTS\Admin\Settings::save( $_POST );
-		$tab = sanitize_key( wp_unslash( $_POST['_tab'] ?? 'general' ) );
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$posted = wp_unslash( $_POST );
+		WPTS\Admin\Settings::save( $posted );
+		$tab = sanitize_key( $posted['_tab'] ?? 'general' );
 		wp_safe_redirect( admin_url( "admin.php?page=wpts-settings&tab={$tab}&saved=1" ) );
 		exit;
 	} );
@@ -154,8 +159,17 @@ function wpts_register_post_handlers(): void {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_die( esc_html__( 'You do not have permission to do this.', 'turbo-search' ) );
 		}
-		if ( ! empty( $_FILES['import_file'] ) ) {
-			$result = WPTS\Admin\SettingsExporter::import( $_FILES['import_file'] );
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Elements validated and sanitized individually below.
+		$raw_file = isset( $_FILES['import_file'] ) && is_array( $_FILES['import_file'] ) ? $_FILES['import_file'] : null;
+		if ( $raw_file ) {
+			$file = [
+				'name'     => sanitize_file_name( wp_unslash( $raw_file['name'] ?? '' ) ),
+				'type'     => sanitize_mime_type( wp_unslash( $raw_file['type'] ?? '' ) ),
+				'tmp_name' => sanitize_text_field( wp_unslash( $raw_file['tmp_name'] ?? '' ) ),
+				'error'    => isset( $raw_file['error'] ) ? absint( wp_unslash( $raw_file['error'] ) ) : UPLOAD_ERR_NO_FILE,
+				'size'     => isset( $raw_file['size'] ) ? absint( wp_unslash( $raw_file['size'] ) ) : 0,
+			];
+			$result = WPTS\Admin\SettingsExporter::import( $file );
 			$status = $result['success'] ? 'imported=1' : 'import_error=' . urlencode( $result['message'] );
 			wp_safe_redirect( admin_url( "admin.php?page=wpts-settings&tab=backup&{$status}" ) );
 			exit;
@@ -168,8 +182,10 @@ function wpts_register_post_handlers(): void {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_die( esc_html__( 'You do not have permission to do this.', 'turbo-search' ) );
 		}
-		WPTS\Admin\Settings::save( $_POST );
-		$tab = sanitize_key( wp_unslash( $_POST['_tab'] ?? 'general' ) );
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$posted = wp_unslash( $_POST );
+		WPTS\Admin\Settings::save( $posted );
+		$tab = sanitize_key( $posted['_tab'] ?? 'general' );
 		wp_safe_redirect( admin_url( "admin.php?page=wpts-cache&tab={$tab}&saved=1" ) );
 		exit;
 	} );
@@ -249,15 +265,15 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 	\WP_CLI::add_command( 'wpts',         'WPTS\\CLI\\Commands' );
 
 	// Register hyphenated aliases for subcommands
-	$hyphen_commands = [
+	$wpts_hyphen_commands = [
 		'flush-cache'    => 'flush_cache',
 		'flush-index'    => 'flush_index',
 		'flush-tracking' => 'flush_tracking',
 		'prune-logs'     => 'prune_logs',
 	];
-	foreach ( $hyphen_commands as $hyphen => $method ) {
-		\WP_CLI::add_command( "turbo-search {$hyphen}", [ 'WPTS\\CLI\\Commands', $method ] );
-		\WP_CLI::add_command( "wpts {$hyphen}",         [ 'WPTS\\CLI\\Commands', $method ] );
+	foreach ( $wpts_hyphen_commands as $wpts_hyphen => $wpts_method ) {
+		\WP_CLI::add_command( "turbo-search {$wpts_hyphen}", [ 'WPTS\\CLI\\Commands', $wpts_method ] );
+		\WP_CLI::add_command( "wpts {$wpts_hyphen}",         [ 'WPTS\\CLI\\Commands', $wpts_method ] );
 	}
 }
 

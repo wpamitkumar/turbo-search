@@ -23,13 +23,14 @@ class BotProtection {
 		}
 
 		// 1. Honeypot check: if honeypot parameter is non-empty, it's a bot
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		$hp_val = $request ? $request->get_param( self::HONEYPOT_FIELD ) : ( isset( $_REQUEST[ self::HONEYPOT_FIELD ] ) ? sanitize_text_field( wp_unslash( $_REQUEST[ self::HONEYPOT_FIELD ] ) ) : null );
 		if ( ! empty( $hp_val ) ) {
 			return false;
 		}
 
 		// 2. User agent checks
-		$ua = (string) ( $_SERVER['HTTP_USER_AGENT'] ?? '' );
+		$ua = isset( $_SERVER['HTTP_USER_AGENT'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) ) : '';
 		if ( '' !== $ua ) {
 			$bot_signatures = [ 'curl', 'python-requests', 'scrapy', 'wget', 'httpclient', 'nikto', 'sqlmap', 'ahrefsbot' ];
 			$ua_lower = strtolower( $ua );
@@ -41,7 +42,7 @@ class BotProtection {
 		}
 
 		// 3. Burst Rate Limiting: max 60 searches per 60 seconds per IP
-		$ip = sanitize_text_field( (string) ( $_SERVER['REMOTE_ADDR'] ?? '' ) );
+		$ip = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
 		if ( '' !== $ip ) {
 			$transient_key = 'wpts_rl_' . md5( $ip );
 			$current_count = (int) get_transient( $transient_key );

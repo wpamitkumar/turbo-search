@@ -13,11 +13,14 @@ class ABTesting {
 	 * Determine active variant for current request (cookie or random 50/50).
 	 */
 	public static function get_current_variant(): string {
-		if ( isset( $_COOKIE['wpts_ab_variant'] ) && in_array( $_COOKIE['wpts_ab_variant'], [ 'A', 'B' ], true ) ) {
-			return $_COOKIE['wpts_ab_variant'];
+		if ( isset( $_COOKIE['wpts_ab_variant'] ) ) {
+			$cookie_variant = sanitize_key( wp_unslash( $_COOKIE['wpts_ab_variant'] ) );
+			if ( in_array( $cookie_variant, [ 'A', 'B' ], true ) ) {
+				return $cookie_variant;
+			}
 		}
 
-		$variant = ( mt_rand( 0, 1 ) === 0 ) ? 'A' : 'B';
+		$variant = ( wp_rand( 0, 1 ) === 0 ) ? 'A' : 'B';
 		if ( ! headers_sent() ) {
 			setcookie( 'wpts_ab_variant', $variant, time() + 30 * DAY_IN_SECONDS, COOKIEPATH, COOKIE_DOMAIN );
 		}
@@ -37,6 +40,7 @@ class ABTesting {
 		global $wpdb;
 		$table = $wpdb->prefix . 'wpts_search_log';
 
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 		$exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) );
 		if ( ! $exists ) {
 			return [
@@ -46,7 +50,7 @@ class ABTesting {
 			];
 		}
 
-		$rows = $wpdb->get_results( $wpdb->prepare( // phpcs:ignore
+		$rows = $wpdb->get_results( $wpdb->prepare(
 			"SELECT
 				variant,
 				COUNT(*) AS total,
@@ -57,6 +61,7 @@ class ABTesting {
 			 GROUP BY variant",
 			get_current_blog_id()
 		), ARRAY_A );
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 
 		$data = [
 			'A' => [ 'searches' => 0, 'cache_hits' => 0, 'cache_hit_rate' => 0.0, 'clicks' => 0, 'ctr' => 0.0 ],

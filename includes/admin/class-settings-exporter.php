@@ -31,7 +31,8 @@ class SettingsExporter {
 		header( 'Pragma: no-cache' );
 		header( 'Expires: 0' );
 
-		echo $json; // phpcs:ignore
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo $json;
 		exit;
 	}
 

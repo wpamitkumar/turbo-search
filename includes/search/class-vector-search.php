@@ -79,6 +79,7 @@ class VectorSearch {
 		}
 
 		$model    = (string) Settings::get( 'vector_model', 'text-embedding-3-small' );
+		// phpcs:ignore PluginCheck.CodeAnalysis.AIProvider.DirectIntegration
 		$response = wp_remote_post( 'https://api.openai.com/v1/embeddings', [
 			'timeout' => 8,
 			'headers' => [

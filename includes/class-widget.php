@@ -15,9 +15,12 @@ class WPTS_Search_Widget extends \WP_Widget {
 	}
 
 	public function widget( $args, $instance ): void {
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo $args['before_widget'];
 		if ( ! empty( $instance['title'] ) ) {
-			echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'];
+			$title = apply_filters( 'widget_title', $instance['title'] );
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo $args['before_title'] . esc_html( $title ) . $args['after_title'];
 		}
 
 		$post_type = $instance['post_type'] ?? '';
@@ -25,6 +28,7 @@ class WPTS_Search_Widget extends \WP_Widget {
 			$post_type = implode( ',', array_filter( array_map( 'sanitize_key', $post_type ) ) );
 		}
 
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo wpts_build_search_html( [
 			'placeholder'     => $instance['placeholder'] ?? __( 'Search…', 'turbo-search' ),
 			'theme'           => $instance['theme'] ?? 'light',
@@ -49,6 +53,7 @@ class WPTS_Search_Widget extends \WP_Widget {
 			'border_radius'   => 10,
 			'class'           => '',
 		] );
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo $args['after_widget'];
 	}
 

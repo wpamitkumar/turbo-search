@@ -18,13 +18,14 @@ class AnalyticsReport {
 		$table = $wpdb->prefix . 'wpts_search_log';
 		$since = gmdate( 'Y-m-d H:i:s', strtotime( "-{$days} days" ) );
 
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 		$exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) );
 		if ( ! $exists ) {
 			return [];
 		}
 
 		// Fetch clicks with position
-		$rows = $wpdb->get_results( $wpdb->prepare( // phpcs:ignore
+		$rows = $wpdb->get_results( $wpdb->prepare(
 			"SELECT clicked_position, COUNT(*) as clicks
 			 FROM {$table}
 			 WHERE searched_at >= %s AND clicked_position > 0 AND site_id = %d
@@ -34,7 +35,7 @@ class AnalyticsReport {
 			$since, get_current_blog_id()
 		), ARRAY_A );
 
-		$total_searches = (int) $wpdb->get_var( $wpdb->prepare( // phpcs:ignore
+		$total_searches = (int) $wpdb->get_var( $wpdb->prepare(
 			"SELECT COUNT(*) FROM {$table} WHERE searched_at >= %s AND results > 0 AND site_id = %d",
 			$since, get_current_blog_id()
 		) );
@@ -43,7 +44,7 @@ class AnalyticsReport {
 		$keywords_by_pos = [];
 
 		if ( ! empty( $rows ) ) {
-			$all_keywords = (array) $wpdb->get_results( $wpdb->prepare( // phpcs:ignore
+			$all_keywords = (array) $wpdb->get_results( $wpdb->prepare(
 				"SELECT clicked_position, query, MAX(post_type) as post_type, COUNT(*) as keyword_clicks, MAX(searched_at) as last_clicked
 				 FROM {$table}
 				 WHERE searched_at >= %s AND clicked_position > 0 AND site_id = %d
@@ -51,6 +52,7 @@ class AnalyticsReport {
 				 ORDER BY clicked_position ASC, keyword_clicks DESC",
 				$since, get_current_blog_id()
 			), ARRAY_A );
+			// phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 
 			foreach ( $all_keywords as $kw ) {
 				$p = (int) $kw['clicked_position'];
@@ -93,12 +95,13 @@ class AnalyticsReport {
 		$table = $wpdb->prefix . 'wpts_search_log';
 		$since = gmdate( 'Y-m-d H:i:s', strtotime( "-{$days} days" ) );
 
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 		$exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) );
 		if ( ! $exists ) {
 			return [];
 		}
 
-		return (array) $wpdb->get_results( $wpdb->prepare( // phpcs:ignore
+		$results = (array) $wpdb->get_results( $wpdb->prepare(
 			"SELECT query, clicked_position, MAX(post_type) as post_type, COUNT(*) as clicks, MAX(searched_at) as last_clicked
 			 FROM {$table}
 			 WHERE searched_at >= %s AND clicked_position > 0 AND site_id = %d
@@ -107,6 +110,8 @@ class AnalyticsReport {
 			 LIMIT %d",
 			$since, get_current_blog_id(), $limit
 		), ARRAY_A );
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
+		return $results;
 	}
 
 	/**
@@ -117,12 +122,13 @@ class AnalyticsReport {
 		$table = $wpdb->prefix . 'wpts_search_log';
 		$since = gmdate( 'Y-m-d H:i:s', strtotime( "-{$days} days" ) );
 
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 		$exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) );
 		if ( ! $exists ) {
 			return [];
 		}
 
-		return (array) $wpdb->get_results( $wpdb->prepare( // phpcs:ignore
+		$results = (array) $wpdb->get_results( $wpdb->prepare(
 			"SELECT query, COUNT(*) as search_count, AVG(results) as avg_results, MAX(searched_at) as last_searched
 			 FROM {$table}
 			 WHERE searched_at >= %s AND results > 0 AND (clicked_position IS NULL OR clicked_position = 0) AND site_id = %d
@@ -131,6 +137,8 @@ class AnalyticsReport {
 			 LIMIT %d",
 			$since, get_current_blog_id(), $limit
 		), ARRAY_A );
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
+		return $results;
 	}
 
 	/**
@@ -141,6 +149,7 @@ class AnalyticsReport {
 		$table = $wpdb->prefix . 'wpts_search_log';
 		$since = gmdate( 'Y-m-d H:i:s', strtotime( "-{$days} days" ) );
 
+		// phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 		$exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) );
 		if ( ! $exists ) {
 			return [
@@ -152,7 +161,7 @@ class AnalyticsReport {
 			];
 		}
 
-		$row = $wpdb->get_row( $wpdb->prepare( // phpcs:ignore
+		$row = $wpdb->get_row( $wpdb->prepare(
 			"SELECT
 				COUNT(*) AS total,
 				SUM( CASE WHEN clicked_position > 0 THEN 1 ELSE 0 END ) AS clicks,
@@ -162,6 +171,7 @@ class AnalyticsReport {
 			 WHERE searched_at >= %s AND site_id = %d",
 			$since, get_current_blog_id()
 		), ARRAY_A );
+		// phpcs:enable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB
 
 		$total   = (int) ( $row['total'] ?? 0 );
 		$clicks  = (int) ( $row['clicks'] ?? 0 );
