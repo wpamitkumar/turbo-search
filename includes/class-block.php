@@ -19,6 +19,13 @@ class Block {
 	public function register(): void {
 		add_action( 'init', [ $this, 'register_assets' ] );
 		add_action( 'init', [ $this, 'register_block'  ], 20 ); // after assets at default priority
+		add_action( 'enqueue_block_editor_assets', [ $this, 'enqueue_editor_assets' ] );
+	}
+
+	public function enqueue_editor_assets(): void {
+		wp_enqueue_script( self::EDITOR_SCRIPT_HANDLE );
+		wp_enqueue_style( self::EDITOR_STYLE_HANDLE );
+		$this->localize_editor_script();
 	}
 
 	// Step 1: Register all scripts/styles

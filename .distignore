@@ -25,7 +25,8 @@ Thumbs.db
 # Package Managers & Build Logs
 node_modules/
 vendor/
-build/
+/build/
+!blocks/**/build/
 composer.json
 composer.lock
 npm-debug.log*

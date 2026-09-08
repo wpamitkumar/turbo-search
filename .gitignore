@@ -37,8 +37,9 @@ composer.phar
 *.zip
 *.tar.gz
 *.tgz
-dist/
-build/
+/dist/
+/build/
+!blocks/**/build/
 
 # Logs & Temporary files
 *.log
